@@ -8,7 +8,9 @@ public enum Messages {
 
     // Exception messages:
     ITEM_NOT_FOUND("item.not.found"),
-    WAREHOUSE_NOT_FOUND("warehouse.not.found");
+    WAREHOUSE_NOT_FOUND("warehouse.not.found"),
+    NEGATIVE_QUANTITY("negative.quantity"),
+    WAREHOUSE_CAPACITY_LIMIT("warehouse.capacity.limit");
 
     private final String type;
 

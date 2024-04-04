@@ -21,33 +21,33 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    // Test connection
+    // Test connection:
     @GetMapping("/hello")
     public ResponseEntity<String> hello() {
         return ResponseEntity.ok("Hello");
     }
 
-    // Add new item
+    // Add new item:
     @PostMapping
     public ResponseEntity<ItemDto> addItem(@Valid @RequestBody ItemDto itemDto) {
         ItemDto createdItem = itemService.addItem(itemDto);
         return ResponseEntity.created(URI.create("/" + createdItem.getId())).body(createdItem);
     }
 
-    // Look up Item by id
+    // Look up Item by id:
     @GetMapping("/{id}")
     public ResponseEntity<ItemDto> findById(@PathVariable int id) {
         return ResponseEntity.ok(itemService.findById(id));
     }
 
-    // Update Item
+    // Update Item:
     @PutMapping("/{id}")
     public ResponseEntity<ItemDto> updateItem(@PathVariable int id, @Valid @RequestBody ItemDto updatedInfo) {
         ItemDto updatedItem = itemService.updateById(id, updatedInfo);
         return ResponseEntity.ok(updatedItem);
     }
 
-    // Delete Item
+    // Delete Item:
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable int id) {
         itemService.deleteById(id);

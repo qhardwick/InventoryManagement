@@ -41,6 +41,26 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
     }
 
+    // Attempted to remove more items than were currently being stored:
+    @ExceptionHandler(NegativeQuantityException.class)
+    public ResponseEntity<ErrorMessage> handleNegativeQuantityException(NegativeQuantityException exception) {
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setCode(HttpStatus.BAD_REQUEST.value());
+        errorMessage.setMessage(exception.getMessage());
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    // Attempted to add more Items than a Warehouse had space for:
+    @ExceptionHandler(WarehouseCapacityLimitException.class)
+    public ResponseEntity<ErrorMessage> handleWarehouseCapacityLimitException(WarehouseCapacityLimitException exception) {
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setCode(HttpStatus.BAD_REQUEST.value());
+        errorMessage.setMessage(exception.getMessage());
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
     // Handles Exceptions thrown from Validation failures as defined in the DTOs:
     @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
     public ResponseEntity<ErrorMessage> handleValidationExceptions(MethodArgumentNotValidException e) {

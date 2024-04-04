@@ -25,7 +25,7 @@ public class ItemServiceImpl implements ItemService {
         this.environment = environment;
     }
 
-    // Find Item by ID
+    // Find Item by ID:
     @Override
     public ItemDto findById(int id) {
         Optional<Item> itemOptional = itemRepository.findById(id);
@@ -36,13 +36,13 @@ public class ItemServiceImpl implements ItemService {
         return new ItemDto(itemOptional.get());
     }
 
-    // Add new Item to DB
+    // Add new Item to DB:
     @Override
     public ItemDto addItem(ItemDto itemDto) {
         return new ItemDto(itemRepository.saveAndFlush(itemDto.getItem()));
     }
 
-    // Update Item info in DB
+    // Update Item info in DB:
     @Override
     public ItemDto updateById(int id, ItemDto updatedInfo) {
         findById(id);
@@ -50,7 +50,7 @@ public class ItemServiceImpl implements ItemService {
         return new ItemDto(itemRepository.saveAndFlush(updatedInfo.getItem()));
     }
 
-    // Remove Item from DB
+    // Remove Item from DB:
     @Override
     public void deleteById(int id) {
         findById(id);
