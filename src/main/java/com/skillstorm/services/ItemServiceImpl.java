@@ -8,9 +8,12 @@ import com.skillstorm.utils.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @PropertySource("classpath:ValidationMessages.properties")
@@ -34,6 +37,12 @@ public class ItemServiceImpl implements ItemService {
         }
 
         return new ItemDto(itemOptional.get());
+    }
+
+    // Find all Items
+    @Override
+    public List<ItemDto> findAll() {
+        return itemRepository.findAll().stream().map(ItemDto::new).collect(Collectors.toList());
     }
 
     // Add new Item to DB:

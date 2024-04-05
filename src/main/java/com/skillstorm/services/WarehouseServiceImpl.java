@@ -61,6 +61,12 @@ public class WarehouseServiceImpl implements WarehouseService {
         return new WarehouseDto(warehouseOptional.get());
     }
 
+    // Find all Warehouses:
+    @Override
+    public List<WarehouseDto> findAllWarehouses() {
+        return warehouseRepository.findAll().stream().map(WarehouseDto::new).collect(Collectors.toList());
+    }
+
     // Update Warehouse info in DB
     @Override
     public WarehouseDto updateById(int id, WarehouseDto updatedInfo) {

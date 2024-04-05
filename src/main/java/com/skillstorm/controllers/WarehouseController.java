@@ -3,6 +3,8 @@ package com.skillstorm.controllers;
 import com.skillstorm.dtos.WarehouseDto;
 import com.skillstorm.dtos.WarehouseItemDto;
 import com.skillstorm.services.WarehouseService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,8 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
+@OpenAPIDefinition(info = @Info(title = "Inventory Management API", version = "1.0", description = "Inventory Management Item Information"))
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/warehouses")
 public class WarehouseController {
 
@@ -38,7 +42,13 @@ public class WarehouseController {
     // Look up Warehouse by id:
     @GetMapping("/{id}")
     public ResponseEntity<WarehouseDto> findById(@PathVariable int id) {
-        return ResponseEntity.ok().body(warehouseService.findWarehouseById(id));
+        return ResponseEntity.ok(warehouseService.findWarehouseById(id));
+    }
+
+    // Find all Warehouses
+    @GetMapping
+    public ResponseEntity<List<WarehouseDto>> findAllWarehouses() {
+        return ResponseEntity.ok(warehouseService.findAllWarehouses());
     }
 
     // Update Warehouse:
@@ -71,9 +81,9 @@ public class WarehouseController {
 
     // Show all items currently stored in a Warehouse:
     // TO-DO: Simplify the return
-    @GetMapping("{id}/items")
-    public ResponseEntity<List<WarehouseItemDto>> findAllItemsInWarehouse(@PathVariable int id) {
-        return ResponseEntity.ok(warehouseService.findAllItemsInWarehouse(id));
+    @GetMapping("{warehouseId}/items")
+    public ResponseEntity<List<WarehouseItemDto>> findAllItemsInWarehouse(@PathVariable int warehouseId) {
+        return ResponseEntity.ok(warehouseService.findAllItemsInWarehouse(warehouseId));
     }
 
     // Remove Items from a Warehouse:

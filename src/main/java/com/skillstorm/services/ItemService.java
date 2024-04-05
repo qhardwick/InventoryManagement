@@ -2,6 +2,8 @@ package com.skillstorm.services;
 
 import com.skillstorm.dtos.ItemDto;
 
+import java.util.List;
+
 public interface ItemService {
 
 
@@ -16,4 +18,7 @@ public interface ItemService {
 
     // Remove Item from DB
     void deleteById(int id);
+
+    // Find all Items:
+    List<ItemDto> findAll();
 }

@@ -30,4 +30,6 @@ public interface WarehouseService {
 
     // Check remaining capacity in a Wrehouse:
     Integer checkCapacity(int id);
+
+    List<WarehouseDto> findAllWarehouses();
 }
