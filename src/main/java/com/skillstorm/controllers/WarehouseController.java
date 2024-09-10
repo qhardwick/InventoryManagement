@@ -3,8 +3,6 @@ package com.skillstorm.controllers;
 import com.skillstorm.dtos.WarehouseDto;
 import com.skillstorm.dtos.WarehouseItemDto;
 import com.skillstorm.services.WarehouseService;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +12,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@OpenAPIDefinition(info = @Info(title = "Inventory Management API", version = "1.0", description = "Inventory Management Item Information"))
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/warehouses")
 public class WarehouseController {
 
@@ -71,7 +68,6 @@ public class WarehouseController {
         return ResponseEntity.ok(warehouseService.checkCapacity(id));
     }
 
-    // TO-DO: Find something better to return.
     // Add Items to Warehouse:
     @PostMapping("/{warehouseId}/items")
     public ResponseEntity<WarehouseItemDto> addItemsToWarehouse(@PathVariable int warehouseId, @RequestParam int itemId, @RequestParam int quantity) {

@@ -2,11 +2,8 @@ package com.skillstorm.controllers;
 
 import com.skillstorm.dtos.ItemDto;
 import com.skillstorm.services.ItemService;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -14,8 +11,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@OpenAPIDefinition(info = @Info(title = "Inventory Management API", version = "1.0", description = "Inventory Management Item Information"))
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/items")
 public class ItemController {
 

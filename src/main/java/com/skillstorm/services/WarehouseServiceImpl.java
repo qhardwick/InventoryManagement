@@ -32,17 +32,16 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     private final WarehouseRepository warehouseRepository;
     private final WarehouseItemRepository warehouseItemRepository;
+    private final ItemService itemService;
     private final Environment environment;
-    private final RestTemplate restTemplate;
-    private final String itemsUrl;
 
     @Autowired
-    public WarehouseServiceImpl(WarehouseRepository warehouseRepository, WarehouseItemRepository warehouseItemRepository, Environment environment, RestTemplate restTemplate, @Value("${items.url}") String itemsUrl) {
+    public WarehouseServiceImpl(WarehouseRepository warehouseRepository, WarehouseItemRepository warehouseItemRepository, ItemService itemService,
+                                Environment environment) {
         this.warehouseRepository = warehouseRepository;
         this.warehouseItemRepository = warehouseItemRepository;
+        this.itemService = itemService;
         this.environment = environment;
-        this.restTemplate = restTemplate;
-        this.itemsUrl = itemsUrl;
     }
 
     // Add new Warehouse to DB
@@ -141,14 +140,8 @@ public class WarehouseServiceImpl implements WarehouseService {
 
         // If no previous WarehouseItem exists, create one while verifying that the Item and Warehouse are both valid:
         Warehouse warehouse = findWarehouseById(warehouseId).getWarehouse();
+        ItemDto item = itemService.findById(itemId);
 
-        String requestUrl = itemsUrl + "/" + itemId;
-        ResponseEntity<?> itemResponse = restTemplate.getForEntity(requestUrl, ItemDto.class);
-        if(itemResponse.getStatusCode() != HttpStatus.OK) {
-            throw new ItemNotFoundException(environment.getProperty(Messages.ITEM_NOT_FOUND.toString()));
-        }
-        ItemDto itemDto = (ItemDto) itemResponse.getBody();
-
-        return new WarehouseItem(warehouse, itemDto.getItem(), 0);
+        return new WarehouseItem(warehouse, item.getItem(), 0);
     }
 }
