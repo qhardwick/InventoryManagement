@@ -2,12 +2,8 @@ package com.skillstorm.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.skillstorm.entities.Warehouse;
-import com.skillstorm.entities.WarehouseItem;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
