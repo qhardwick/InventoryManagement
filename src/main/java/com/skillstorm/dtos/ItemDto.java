@@ -2,12 +2,11 @@ package com.skillstorm.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.skillstorm.entities.Item;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor

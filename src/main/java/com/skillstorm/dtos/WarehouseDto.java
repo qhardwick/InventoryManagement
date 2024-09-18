@@ -2,11 +2,13 @@ package com.skillstorm.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.skillstorm.entities.Warehouse;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class WarehouseDto {
 
     private int id;

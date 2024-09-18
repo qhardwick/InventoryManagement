@@ -1,5 +1,6 @@
 package com.skillstorm.exceptions;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -8,9 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import javax.validation.ConstraintViolationException;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 @PropertySource("classpath:ValidationMessages.properties")
