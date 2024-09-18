@@ -79,8 +79,8 @@ public class WarehouseStepDefinitions {
     @Given("multiple warehouses exist")
     public void multipleWarehousesExist() {
         // Add multiple warehouses to simulate
-        warehouseService.addWarehouse(new WarehouseDto(null, "Warehouse 1", "City A", 100));
-        warehouseService.addWarehouse(new WarehouseDto(null, "Warehouse 2", "City B", 200));
+        warehouseService.addWarehouse(new WarehouseDto(0, "Warehouse 1", "City A", 100));
+        warehouseService.addWarehouse(new WarehouseDto(0, "Warehouse 2", "City B", 200));
     }
 
     @When("I retrieve all warehouses")

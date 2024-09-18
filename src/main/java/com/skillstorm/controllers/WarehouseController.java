@@ -3,11 +3,11 @@ package com.skillstorm.controllers;
 import com.skillstorm.dtos.WarehouseDto;
 import com.skillstorm.dtos.WarehouseItemDto;
 import com.skillstorm.services.WarehouseService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
