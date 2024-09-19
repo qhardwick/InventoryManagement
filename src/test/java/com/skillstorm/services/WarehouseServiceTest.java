@@ -20,7 +20,6 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.env.Environment;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -151,9 +150,7 @@ class WarehouseServiceTest {
         warehouse2.setName("Test Warehouse 2");
         warehouse2.setLocation("Test Location 2");
         warehouse2.setCapacity(500);
-        List<Warehouse> warehouseList = new ArrayList<>();
-        warehouseList.add(returnedWarehouse);
-        warehouseList.add(warehouse2);
+        List<Warehouse> warehouseList = List.of(returnedWarehouse, warehouse2);
 
         // Define stubbing:
         when(warehouseRepository.findAll()).thenReturn(warehouseList);
@@ -306,8 +303,7 @@ class WarehouseServiceTest {
     @Test
     void findAllItemsInAWarehouseTest() {
         // Define stubbing:
-        List<WarehouseItem> warehouseItemList = new ArrayList<>();
-        warehouseItemList.add(returnedWarehouseItem);
+        List<WarehouseItem> warehouseItemList = List.of(returnedWarehouseItem);
         when(warehouseItemRepository.findAllByWarehouseId(1)).thenReturn(Optional.of(warehouseItemList));
 
         // Call method to test:
