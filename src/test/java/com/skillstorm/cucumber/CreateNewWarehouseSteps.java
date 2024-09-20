@@ -7,15 +7,12 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-import static org.testng.AssertJUnit.assertTrue;
+import static org.testng.Assert.assertTrue;
 
 public class CreateNewWarehouseSteps {
 
@@ -32,6 +29,7 @@ public class CreateNewWarehouseSteps {
     @Given("I am on the WarehouseManager page")
     public void iAmOnTheWarehouseManagerPage() {
         warehousePage.get();
+        assertTrue(warehousePage.onPage());
     }
 
     @When("I click the add warehouse button")
@@ -52,11 +50,8 @@ public class CreateNewWarehouseSteps {
     @Then("I should see the warehouse on the list with name {string}")
     public void iShouldSeeTheWarehouseInTheList(String name) {
         // Logic to check if the warehouse list contains the new warehouse
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(2000));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[contains(text(),'" + name + "')]")));
-
-        boolean isWarehousePresent = driver.findElements(By.xpath("//td[contains(text(),'" + name + "')]")).size() > 0;
-        assertTrue("Warehouse should be present in the list", isWarehousePresent);
+        boolean result = warehousePage.wasWarehouseAdded(name);
+        assertTrue(result, name + "was added to the warehouse table");
     }
 
     @After("@createWarehouse")
