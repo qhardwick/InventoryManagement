@@ -39,6 +39,10 @@ public class WarehouseManagerPage {
         PageFactory.initElements(driver, this);
     }
 
+    public void get() {
+        driver.navigate().to(url);
+    }
+
     // Verify that we're on the WarehouseManager page:
     public boolean onPage() {
         return url.equals(driver.getCurrentUrl());
@@ -46,6 +50,9 @@ public class WarehouseManagerPage {
 
     // Click on the button to open the add new warehouse form:
     public void clickAddWarehouseButton() {
+        // Check for visibility before attempting to interact with the form:
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(2000));
+        wait.until(ExpectedConditions.visibilityOf(addWarehouseButton));
         addWarehouseButton.click();
     }
 
@@ -63,11 +70,5 @@ public class WarehouseManagerPage {
     // Click on the button to submit the form:
     public void submitForm() {
         submitButton.click();
-    }
-
-    // Fill in and submit the form:
-    public void addNewWarehouse(String name, String location, int capacity) {
-        fillOutNewWarehouseForm(name, location, capacity);
-        submitForm();
     }
 }
