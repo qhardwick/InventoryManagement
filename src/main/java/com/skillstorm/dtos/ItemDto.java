@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ItemDto {
 
-    @Min(value = 0, message = "{item.id.value}")
     private int id;
 
     @Size(min = 3, max = 20, message = "{item.name.size}")
