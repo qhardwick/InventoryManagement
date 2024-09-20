@@ -1,6 +1,7 @@
 package com.skillstorm.selenium;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -12,6 +13,7 @@ import java.time.Duration;
 
 public class WarehouseManagerPage {
     private WebDriver driver;
+    private WebDriverWait wait;
     private static final String url = "http://localhost:5173/warehouses";
 
     // Button to open add new warehouse form:
@@ -37,6 +39,7 @@ public class WarehouseManagerPage {
     // Constructor to initialize driver and page elements:
     public WarehouseManagerPage(WebDriver driver) {
         this.driver = driver;
+        wait = new WebDriverWait(driver, Duration.ofMillis(2000));
         PageFactory.initElements(driver, this);
     }
 
@@ -52,17 +55,13 @@ public class WarehouseManagerPage {
 
     // Click on the button to open the add new warehouse form:
     public void clickAddWarehouseButton() {
-        // Check for visibility before attempting to interact with the form:
-        System.out.println("\n\nclickAddWarehouseButton method called \n\n");
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(2000));
         wait.until(ExpectedConditions.elementToBeClickable(addWarehouseButton));
         addWarehouseButton.click();
     }
 
     // Fill in the details of the new warehouse form:
     public void fillOutNewWarehouseForm(String name, String location, int capacity) {
-        // Check for visibility before attempting to interact with the form:
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(2000));
+
         wait.until(ExpectedConditions.visibilityOf(nameField));
 
         nameField.sendKeys(name);
@@ -77,10 +76,24 @@ public class WarehouseManagerPage {
 
     // Verify the Warehouse had been added:
     public boolean wasWarehouseAdded(String name) {
-        // Use WebDriverWait to ensure the element is interactable
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(2000));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[contains(text(),'" + name + "')]")));
+        try {
+            // Use a wait to ensure the table is loaded
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table//tbody")));
 
-        return driver.findElements(By.xpath("//td[contains(text(),'" + name + "')]")).size() > 0;
+            // Check if any elements match the provided name
+            return !driver.findElements(By.xpath("//td[contains(text(),'" + name + "')]")).isEmpty();
+        } catch (NoSuchElementException e) {
+            // If the element cannot be found, return false
+            return false;
+        } catch (Exception e) {
+            // Handle any other exceptions that might occur
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Delete Warehouse:
+    public void deleteWarehouseByName(String name) {
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("delete-" + name))).click();
     }
 }
