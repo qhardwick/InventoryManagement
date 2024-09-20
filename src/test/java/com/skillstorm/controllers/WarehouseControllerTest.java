@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class WarehouseControllerTest {
+class WarehouseControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -71,7 +71,7 @@ public class WarehouseControllerTest {
 
     @Test
     @SneakyThrows
-    public void helloTest() {
+    void helloTest() {
         mockMvc.perform(get("/warehouses/hello")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -81,7 +81,7 @@ public class WarehouseControllerTest {
 
     @Test
     @SneakyThrows
-    public void addWarehouseTest() {
+    void addWarehouseTest() {
         // Define stubbing:
         when(warehouseService.addWarehouse(newWarehouseRequest)).thenReturn(createdWarehouse);
 
@@ -106,7 +106,7 @@ public class WarehouseControllerTest {
 
     @Test
     @SneakyThrows
-    public void findWarehouseByIdTest() {
+    void findWarehouseByIdTest() {
         // Define stubbing:
         when(warehouseService.findWarehouseById(1)).thenReturn(createdWarehouse);
 
@@ -120,7 +120,7 @@ public class WarehouseControllerTest {
 
     @Test
     @SneakyThrows
-    public void findAllWarehousesTest() {
+    void findAllWarehousesTest() {
         // Define stubbing:
         when(warehouseService.findAllWarehouses()).thenReturn(List.of(createdWarehouse));
 
@@ -134,7 +134,7 @@ public class WarehouseControllerTest {
 
     @Test
     @SneakyThrows
-    public void updateWarehouseTest() {
+    void updateWarehouseTest() {
         // Define stubbing:
         when(warehouseService.updateById(1, newWarehouseRequest)).thenReturn(createdWarehouse);
 
@@ -159,7 +159,7 @@ public class WarehouseControllerTest {
 
     @Test
     @SneakyThrows
-    public void deleteWarehouseByIdTest() {
+    void deleteWarehouseByIdTest() {
         // Call method to test:
         mockMvc.perform(delete("/warehouses/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -173,7 +173,7 @@ public class WarehouseControllerTest {
 
     @Test
     @SneakyThrows
-    public void checkCapacityTest() {
+    void checkCapacityTest() {
         // Define stubbing:
         when(warehouseService.checkCapacity(1)).thenReturn(1000);
 
@@ -192,7 +192,7 @@ public class WarehouseControllerTest {
 
     @Test
     @SneakyThrows
-    public void addItemsToWarehouseTest() {
+    void addItemsToWarehouseTest() {
         // Define stubbing:
         when(warehouseService.addItemsToWarehouse(1, 1, 2)).thenReturn(warehouseItemResponse);
 
@@ -210,7 +210,7 @@ public class WarehouseControllerTest {
 
     @Test
     @SneakyThrows
-    public void findAllItemsInAWarehouseTest() {
+    void findAllItemsInAWarehouseTest() {
         // Define stubbing:
         when(warehouseService.findAllItemsInWarehouse(1)).thenReturn(List.of(warehouseItemResponse));
 
@@ -227,7 +227,7 @@ public class WarehouseControllerTest {
 
     @Test
     @SneakyThrows
-    public void deleteItemsFromWarehouseTest() {
+    void deleteItemsFromWarehouseTest() {
         // Define return object with updated quantity:
         WarehouseItemDto updatedWarehouseItem = new WarehouseItemDto();
         updatedWarehouseItem.setId(1);
