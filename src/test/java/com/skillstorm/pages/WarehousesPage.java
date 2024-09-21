@@ -93,6 +93,14 @@ public class WarehousesPage {
         }
     }
 
+    // Find the id of a Warehouse by its name:
+    public int findWarehouseIdByWarehouseName(String name) {
+        // Path points to table data in column 1: //[td[1]] of the row that contains the given name in column 2: //tr[td[2]text() = 'name']]:
+        String idXpath = "//tr[td[2][text() = '" + name + "']]//[td[1]]";
+        String idString = driver.findElement(By.xpath(idXpath)).getText();
+        return Integer.parseInt(idString);
+    }
+
     // Delete Warehouse:
     public void deleteWarehouseByName(String name) {
         wait.until(ExpectedConditions.elementToBeClickable(By.id("delete-" + name))).click();
