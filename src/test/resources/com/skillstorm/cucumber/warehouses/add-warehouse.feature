@@ -22,7 +22,7 @@ Feature: Add a new warehouse to the list
     Then I should not see the warehouse on the list with name "<name>"
 
     Examples:
-    | name                   |location               | capacity |
+    | name                      |location                | capacity |
   #  |                             | Test Location 2 | 1000       |  Test fails despite correct behavior
-    | Test Location 2 |                             | 1000       |
-    | Test Location 3 | Test Location 3 | 0              |
+    | Test Warehouse 3 |                             | 1000       |
+    | Test Warehouse 4 | Test Location 4 | 0             |

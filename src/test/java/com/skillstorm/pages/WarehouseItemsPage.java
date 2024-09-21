@@ -37,8 +37,9 @@ public class WarehouseItemsPage {
     }
 
     // Use a given warehouse id to set our url:
-    public static void setUrl(int warehouseId) {
+    public void get(int warehouseId) {
         url = "http://localhost:5173/warehouses/" + warehouseId + "/items";
+        driver.navigate().to(url);
     }
 
     // Verify we are on the warehouse-items page:

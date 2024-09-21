@@ -88,6 +88,15 @@ public class ItemsPage {
         }
     }
 
+    // Find the id for an item given its name:
+    // TODO: Caution. Item name not guaranteed to be unique. May need to refactor
+    public int getItemIdByItemName(String name) {
+        // Path points to table data in column 1: //[td[1]] of the row that contains the given name in column 2: //tr[td[2]text() = 'name']]:
+        String idXpath = "//tr[td[2][text() = '" + name + "']]//[td[1]]";
+        String idString = driver.findElement(By.xpath(idXpath)).getText();
+        return Integer.parseInt(idString);
+    }
+
     // Delete Item:
     public void deleteItemByName(String name) {
         wait.until(ExpectedConditions.elementToBeClickable(By.id("delete-" + name))).click();

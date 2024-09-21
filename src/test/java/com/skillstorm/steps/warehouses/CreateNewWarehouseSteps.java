@@ -1,4 +1,4 @@
-package com.skillstorm.cucumber;
+package com.skillstorm.steps.warehouses;
 
 import com.skillstorm.pages.WarehousesPage;
 import io.cucumber.java.After;
