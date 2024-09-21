@@ -12,8 +12,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class WarehousesPage {
-    private WebDriver driver;
-    private WebDriverWait wait;
+    private final WebDriver driver;
+    private final WebDriverWait wait;
     private static final String url = "http://localhost:5173/warehouses";
 
     // Button to open add new warehouse form:
@@ -48,7 +48,7 @@ public class WarehousesPage {
         driver.navigate().to(url);
     }
 
-    // Verify that we're on the WarehouseManager page:
+    // Verify that we are on the WarehouseManager page:
     public boolean onPage() {
         return url.equals(driver.getCurrentUrl());
     }
