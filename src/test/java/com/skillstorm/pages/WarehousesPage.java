@@ -1,4 +1,4 @@
-package com.skillstorm.selenium;
+package com.skillstorm.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -11,7 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class WarehouseManagerPage {
+public class WarehousesPage {
     private WebDriver driver;
     private WebDriverWait wait;
     private static final String url = "http://localhost:5173/warehouses";
@@ -37,7 +37,7 @@ public class WarehouseManagerPage {
     private WebElement submitButton;
 
     // Constructor to initialize driver and page elements:
-    public WarehouseManagerPage(WebDriver driver) {
+    public WarehousesPage(WebDriver driver) {
         this.driver = driver;
         wait = new WebDriverWait(driver, Duration.ofMillis(2000));
         PageFactory.initElements(driver, this);
@@ -81,6 +81,7 @@ public class WarehouseManagerPage {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table//tbody")));
 
             // Check if any elements match the provided name
+            // TODO: This returns true if the name is given as an empty string (possibly because of the button icons), even if no warehouse was created. Need a better method.
             return !driver.findElements(By.xpath("//td[contains(text(),'" + name + "')]")).isEmpty();
         } catch (NoSuchElementException e) {
             // If the element cannot be found, return false

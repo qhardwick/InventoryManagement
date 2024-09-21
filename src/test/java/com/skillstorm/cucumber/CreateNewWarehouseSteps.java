@@ -1,6 +1,6 @@
 package com.skillstorm.cucumber;
 
-import com.skillstorm.selenium.WarehouseManagerPage;
+import com.skillstorm.pages.WarehousesPage;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -20,49 +20,50 @@ import static org.testng.AssertJUnit.assertFalse;
 public class CreateNewWarehouseSteps {
 
     private WebDriver driver;
-    private WarehouseManagerPage warehousePage;
+    private WarehousesPage warehousesPage;
     private List<String> createdWarehouses;
 
     @Before("@createWarehouse")
     public void before() {
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-        warehousePage = new WarehouseManagerPage(driver);
+        warehousesPage = new WarehousesPage(driver);
         createdWarehouses = new ArrayList<>();
     }
 
     @Given("I am on the WarehouseManager page")
     public void iAmOnTheWarehouseManagerPage() {
-        warehousePage.get();
-        assertTrue(warehousePage.onPage());
+        warehousesPage.get();
+        assertTrue(warehousesPage.onPage());
     }
 
     @When("I click the add warehouse button")
     public void iClickAddWarehouse() {
-        warehousePage.clickAddWarehouseButton();
+        warehousesPage.clickAddWarehouseButton();
     }
 
     @And("I enter a {string} and a {string} and a {int}")
     public void iFillOutTheAddWarehouseForm(String name, String location, int capacity) {
-        warehousePage.fillOutNewWarehouseForm(name, location, capacity);
+        warehousesPage.fillOutNewWarehouseForm(name, location, capacity);
     }
 
     @And("I click submit")
     public void iClickSubmit() {
-        warehousePage.submitForm();
+        warehousesPage.submitForm();
     }
 
     @Then("I should see the warehouse on the list with name {string}")
     public void iShouldSeeTheWarehouseInTheList(String name) {
-        // Logic to check if the warehouse list contains the new warehouse
-        boolean result = warehousePage.wasWarehouseAdded(name);
+        boolean result = warehousesPage.wasWarehouseAdded(name);
         assertTrue(result, name + "was added to the warehouse table");
+
+        // Add to the list of warehouses that were created so that we can delete them afterwards
         createdWarehouses.add(name);
     }
 
     @Then("I should not see the warehouse on the list with name {string}")
     public void verifyWarehouseNotAdded(String name) {
-        boolean exists = warehousePage.wasWarehouseAdded(name);
+        boolean exists = warehousesPage.wasWarehouseAdded(name);
         assertFalse("Warehouse should not be added", exists);
     }
 
@@ -70,7 +71,7 @@ public class CreateNewWarehouseSteps {
     public void after() {
         // Clean up all the warehouses we have created:
         for(String name : createdWarehouses) {
-            warehousePage.deleteWarehouseByName(name);
+            warehousesPage.deleteWarehouseByName(name);
         }
         if (driver != null) {
             driver.quit();
