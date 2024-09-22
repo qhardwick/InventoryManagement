@@ -5,6 +5,7 @@ import com.skillstorm.dtos.ItemDto;
 import com.skillstorm.dtos.WarehouseDto;
 import com.skillstorm.dtos.WarehouseItemDto;
 import com.skillstorm.services.WarehouseService;
+import com.skillstorm.services.WarehouseServiceImpl;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,10 +30,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class WarehouseControllerTest {
 
+    @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private WarehouseService warehouseService;
+    private WarehouseServiceImpl warehouseService;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final ArgumentCaptor<WarehouseDto> warehouseCaptor = ArgumentCaptor.forClass(WarehouseDto.class);
@@ -41,12 +43,6 @@ class WarehouseControllerTest {
     private WarehouseDto createdWarehouse;
     private ItemDto itemDto;
     private WarehouseItemDto warehouseItemResponse;
-
-    @Autowired
-    public WarehouseControllerTest(MockMvc mockMvc, WarehouseService warehouseService) {
-        this.mockMvc = mockMvc;
-        this.warehouseService = warehouseService;
-    }
 
     @BeforeEach
     public void setup() {
