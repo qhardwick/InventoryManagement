@@ -103,6 +103,36 @@ public class WarehousesPage {
 
     // Delete Warehouse:
     public void deleteWarehouseByName(String name) {
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("delete-" + name))).click();
+        WebElement deleteButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("delete-" + name)));
+        deleteButton.click();
+    }
+
+    // Click to edit a warehouse by its name:
+    public void editWarehouseByName(String name) {
+        WebElement editButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("edit-" + name)));
+        editButton.click();
+    }
+
+    // Fill out the edit warehouse form:
+    public void fillOutEditWarehouseForm(String name, String location, int capacity) {
+        wait.until(ExpectedConditions.visibilityOf(nameField));
+
+        nameField.clear();
+        nameField.sendKeys(name);
+        locationField.clear();
+        locationField.sendKeys(location);
+        capacityField.clear();
+        capacityField.sendKeys(String.valueOf(capacity));
+    }
+
+    // Submit the edit form:
+    public void submitEditForm() {
+        submitButton.click();
+    }
+
+    // Verify that the Warehouse has been updated:
+    public boolean wasWarehouseUpdated(String name) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table//tbody")));
+        return driver.findElement(By.xpath("//td[contains(text(),'" + name + "')]")) != null;
     }
 }
