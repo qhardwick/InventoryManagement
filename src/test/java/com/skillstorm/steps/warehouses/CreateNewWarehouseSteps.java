@@ -71,7 +71,7 @@ public class CreateNewWarehouseSteps {
     public void after() {
         // Clean up all the warehouses we have created:
         for(String name : createdWarehouses) {
-            warehousesPage.deleteWarehouseByName(name);
+            warehousesPage.clickDeleteWarehouseButton(name);
         }
         if (driver != null) {
             driver.quit();

@@ -43,7 +43,7 @@ class WarehouseControllerTest {
     private ItemDto itemDto;
     private WarehouseItemDto warehouseItemResponse;
 
-    //@BeforeEach
+    @BeforeEach
     public void setup() {
 
         newWarehouseRequest = new WarehouseDto();

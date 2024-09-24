@@ -12,8 +12,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class ItemsPage {
-    private WebDriver driver;
-    private WebDriverWait wait;
+    private final WebDriver driver;
+    private final WebDriverWait wait;
+    private final Navbar navbar;
     private static final String url = "http://localhost:5173/items";
 
     // Button to open add new item form:
@@ -35,6 +36,7 @@ public class ItemsPage {
     // Constructor to initialize driver and page elements:
     public ItemsPage(WebDriver driver) {
         this.driver = driver;
+        navbar = new Navbar(driver);
         wait = new WebDriverWait(driver, Duration.ofMillis(2000));
         PageFactory.initElements(driver, this);
     }
@@ -92,7 +94,7 @@ public class ItemsPage {
     // TODO: Caution. Item name not guaranteed to be unique. May need to refactor
     public int getItemIdByItemName(String name) {
         // Path points to table data in column 1: //[td[1]] of the row that contains the given name in column 2: //tr[td[2]text() = 'name']]:
-        String idXpath = "//tr[td[2][text() = '" + name + "']]//[td[1]]";
+        String idXpath = "//tr[td[2][text() = '" + name + "']]/[td[1]]";
         String idString = driver.findElement(By.xpath(idXpath)).getText();
         return Integer.parseInt(idString);
     }

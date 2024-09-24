@@ -14,6 +14,7 @@ import java.time.Duration;
 public class WarehousesPage {
     private final WebDriver driver;
     private final WebDriverWait wait;
+    private final Navbar navbar;
     private static final String url = "http://localhost:5173/warehouses";
 
     // Button to open add new warehouse form:
@@ -39,6 +40,7 @@ public class WarehousesPage {
     // Constructor to initialize driver and page elements:
     public WarehousesPage(WebDriver driver) {
         this.driver = driver;
+        this.navbar = new Navbar(driver);
         wait = new WebDriverWait(driver, Duration.ofMillis(2000));
         PageFactory.initElements(driver, this);
     }
@@ -96,13 +98,23 @@ public class WarehousesPage {
     // Find the id of a Warehouse by its name:
     public int findWarehouseIdByWarehouseName(String name) {
         // Path points to table data in column 1: //[td[1]] of the row that contains the given name in column 2: //tr[td[2]text() = 'name']]:
-        String idXpath = "//tr[td[2][text() = '" + name + "']]//[td[1]]";
+        String idXpath = "//tr[td[2][text() = '" + name + "']]/td[1]";
         String idString = driver.findElement(By.xpath(idXpath)).getText();
         return Integer.parseInt(idString);
     }
 
+    // Navigate to Warehouse-Items page:
+    public void clickInspectWarehouseButton(String name) {
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("inspect-" + name))).click();
+    }
+
+    // Navigate to Edit Warehouse form:
+    public void clickEditWarehouseButton(String name) {
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("edit-" + name))).click();
+    }
+
     // Delete Warehouse:
-    public void deleteWarehouseByName(String name) {
+    public void clickDeleteWarehouseButton(String name) {
         wait.until(ExpectedConditions.elementToBeClickable(By.id("delete-" + name))).click();
     }
 }
