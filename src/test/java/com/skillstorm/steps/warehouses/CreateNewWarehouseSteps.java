@@ -54,7 +54,7 @@ public class CreateNewWarehouseSteps {
 
     @Then("I should see the warehouse on the list with name {string}")
     public void iShouldSeeTheWarehouseInTheList(String name) {
-        boolean result = warehousesPage.wasWarehouseAdded(name);
+        boolean result = warehousesPage.doesWarehouseExist(name);
         assertTrue(result, name + "was added to the warehouse table");
 
         // Add to the list of warehouses that were created so that we can delete them afterwards
@@ -63,7 +63,7 @@ public class CreateNewWarehouseSteps {
 
     @Then("I should not see the warehouse on the list with name {string}")
     public void verifyWarehouseNotAdded(String name) {
-        boolean exists = warehousesPage.wasWarehouseAdded(name);
+        boolean exists = warehousesPage.doesWarehouseExist(name);
         assertFalse("Warehouse should not be added", exists);
     }
 
