@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/qhardwick/InventoryManagementBackend.git'
+                git branch: 'main', url: 'https://github.com/qhardwick/InventoryManagement.git'
             }
         }
         stage('Build Docker Image') {
