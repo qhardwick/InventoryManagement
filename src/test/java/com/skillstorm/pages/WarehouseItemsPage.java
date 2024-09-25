@@ -15,6 +15,7 @@ public class WarehouseItemsPage {
 
     private final WebDriver driver;
     private final WebDriverWait wait;
+    private final Navbar navbar;
     private static String url;
 
     // Page elements:
@@ -37,6 +38,7 @@ public class WarehouseItemsPage {
     // Constructor to intialize driver and page elements:
     public WarehouseItemsPage(WebDriver driver) {
         this.driver = driver;
+        navbar = new Navbar(driver);
         wait = new WebDriverWait(driver, Duration.ofMillis(2000));
         PageFactory.initElements(driver, this);
     }
@@ -60,6 +62,18 @@ public class WarehouseItemsPage {
         WebElement mainTableTitle = warehouseItemsTable.findElement(By.xpath(headerXpath));
         wait.until(ExpectedConditions.visibilityOf(mainTableTitle));
         return mainTableTitle.isDisplayed();
+    }
+
+    // See how many entires are present on the main Warehouse-Items table:
+    public int getNumberOfEntries() {
+        WebElement mainTableBody = warehouseItemsTable.findElement(By.cssSelector("tbody"));
+        return mainTableBody.findElements(By.tagName("tr")).size();
+    }
+
+    // Check to see if the table is empty:
+    public boolean isWarehouseEmpty() {
+        // There should always be at least one empty row plus the row displaying capacity:
+        return getNumberOfEntries() < 3;
     }
 
     // See if a specific item is already being stored in the warehouse:
@@ -86,17 +100,17 @@ public class WarehouseItemsPage {
     }
 
     // Press the increment button to increase the count of a given item by 1:
-    private void pressTheIncrementButtonForAGivenItemId(int itemId) {
-        // Find the button located on the row whose first column contains our itemId:
-        String buttonXpath = ".//tr[td[1][text() = '" + itemId +"']]//td[6]//button";
+    public void pressTheIncrementButtonForAGivenItem(String itemName) {
+        // Find the button located on the row whose 2nd column contains our item name:
+        String buttonXpath = ".//tr[td[2][text() = '" + itemName +"']]//td[6]//button";
         WebElement incrementButton = warehouseItemsTable.findElement(By.xpath(buttonXpath));
         incrementButton.click();
     }
 
     // Press the decrement button to reduce the count of a given item by 1:
-    private void pressTheDecrementButtonForAGivenItemId(int itemId) {
-        // Find the button located on the row whose first column contains our itemId:
-        String buttonXpath = ".//tr[td[1][text() = '" + itemId +"']]//td[7]//button";
+    public void pressTheDecrementButtonForAGivenItem(String itemName) {
+        // Find the button located on the row whose 2nd column contains our item name:
+        String buttonXpath = ".//tr[td[2][text() = '" + itemName +"']]//td[7]//button";
         WebElement decrementButton = warehouseItemsTable.findElement(By.xpath(buttonXpath));
         decrementButton.click();
     }
@@ -167,7 +181,7 @@ public class WarehouseItemsPage {
     }
 
     // Select the row for the given part number. Input the number of items to remove:
-    public void fillOutRemoveItemsFormForAGivenItemId(String itemName, int quantity) {
+    public void fillOutRemoveItemsFormForAGivenItem(String itemName, int quantity) {
 
         // xpath to select the row in the 'Items' table with the specified itemId in the first column:
         String rowXpath = getXpathForItemTableRowByItemName(itemName);

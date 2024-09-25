@@ -72,20 +72,15 @@ public class ItemsPage {
     }
 
     // Verify the Item had been added:
-    public boolean wasItemAdded(String name) {
+    public boolean doesItemExist(String name) {
         try {
             // Use a wait to ensure the table is loaded
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table//tbody")));
 
             // Check if any elements match the provided name
-            // TODO: This returns true if the name is given as an empty string (possibly because of the button icons), even if no item was created. Need a better method.
-            return !driver.findElements(By.xpath("//td[contains(text(),'" + name + "')]")).isEmpty();
+            return !driver.findElements(By.xpath("//tbody/tr/td[2][contains(text(), '" + name + "')]")).isEmpty();
         } catch (NoSuchElementException e) {
             // If the element cannot be found, return false
-            return false;
-        } catch (Exception e) {
-            // Handle any other exceptions that might occur
-            e.printStackTrace();
             return false;
         }
     }

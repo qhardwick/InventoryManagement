@@ -56,7 +56,7 @@ public class AddWarehouseItemsSteps {
         warehousesPage.clickAddWarehouseButton();
         warehousesPage.fillOutNewWarehouseForm("Test Warehouse", "Test Location", 1000);
         warehousesPage.submitForm();
-        if(warehousesPage.wasWarehouseAdded("Test Warehouse")) {
+        if(warehousesPage.doesWarehouseExist("Test Warehouse")) {
             createdWarehouses = List.of("Test Warehouse");
         }
     }
@@ -66,7 +66,7 @@ public class AddWarehouseItemsSteps {
         itemsPage.clickAddItemButton();
         itemsPage.fillOutNewItemForm("Test Item", 100);
         itemsPage.submitForm();
-        if(itemsPage.wasItemAdded("Test Item")) {
+        if(itemsPage.doesItemExist("Test Item")) {
             createdItems = List.of("Test Item");
         }
     }
@@ -147,7 +147,7 @@ public class AddWarehouseItemsSteps {
         // Empty the warehouse:
         for(String itemName : createdWarehouseItemsMap.keySet()) {
             warehouseItemsPage.clickRemoveItems();
-            warehouseItemsPage.fillOutRemoveItemsFormForAGivenItemId(itemName, createdWarehouseItemsMap.get(itemName));
+            warehouseItemsPage.fillOutRemoveItemsFormForAGivenItem(itemName, createdWarehouseItemsMap.get(itemName));
             warehouseItemsPage.clickButtonToSubmitRemoveItemsForm(itemName);
         }
 
