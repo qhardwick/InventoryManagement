@@ -11,7 +11,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:5173", "http://127.0.0.1:5173", "http://3.95.37.62", "http://54.226.216.9"})
+@CrossOrigin(origins = {"http://localhost:5173", "http://127.0.0.1:5173", "http://3.95.37.62", "http://52.90.145.230"})
 @RequestMapping("/items")
 public class ItemController {
 
