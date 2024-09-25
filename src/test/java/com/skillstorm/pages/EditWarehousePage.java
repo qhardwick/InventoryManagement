@@ -1,5 +1,7 @@
 package com.skillstorm.pages;
 
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -72,4 +74,5 @@ public class EditWarehousePage {
         wait.until(ExpectedConditions.elementToBeClickable(editButton));
         editButton.click();
     }
+
 }
