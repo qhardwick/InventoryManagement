@@ -16,7 +16,7 @@ import java.util.List;
 public class ItemController {
 
     private final ItemService itemService;
-
+//    for test
     @Autowired
     public ItemController(ItemService itemService) {
         this.itemService = itemService;
