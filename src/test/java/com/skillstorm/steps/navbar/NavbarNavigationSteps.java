@@ -4,15 +4,13 @@ import com.skillstorm.pages.HomePage;
 import com.skillstorm.pages.ItemsPage;
 import com.skillstorm.pages.Navbar;
 import com.skillstorm.pages.WarehousesPage;
+import com.skillstorm.utils.SingletonDriver;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-
-import java.time.Duration;
 
 import static org.testng.Assert.assertTrue;
 
@@ -26,8 +24,7 @@ public class NavbarNavigationSteps {
 
     @Before("@navbarNavigation")
     public void before() {
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5));
+        driver = SingletonDriver.getChromeDriver();
 
         navbar = new Navbar(driver);
         homePage = new HomePage(driver);
