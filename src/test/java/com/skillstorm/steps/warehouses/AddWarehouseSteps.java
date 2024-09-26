@@ -74,9 +74,7 @@ public class AddWarehouseSteps {
         for(int id : createdWarehouses) {
             warehousesPage.clickDeleteWarehouseButton(id);
         }
-        if (driver != null) {
-            driver.quit();
-        }
+        SingletonDriver.quitDriver();
     }
 
 

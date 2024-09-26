@@ -163,8 +163,6 @@ public class AddWarehouseItemsSteps {
             itemsPage.deleteItemByName(itemName);
         }
 
-        if(driver != null) {
-            driver.quit();
-        }
+        SingletonDriver.quitDriver();
     }
 }
