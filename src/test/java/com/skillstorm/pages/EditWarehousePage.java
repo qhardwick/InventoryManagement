@@ -36,6 +36,7 @@ public class EditWarehousePage {
         this.driver = driver;
         wait = new WebDriverWait(driver, Duration.ofMillis(2000));
         navbar = new Navbar(driver);
+        PageFactory.initElements(driver, this);
     }
 
     // Navigate directly to Edit Warehouse page:

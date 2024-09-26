@@ -73,7 +73,7 @@ public class AddWarehouseItemsSteps {
 
     @Given("I am on the Warehouse-Items page for a given {string}")
     public void iAmOnCorrectWarehouseItemsPage(String warehouse) {
-        int warehouseId = warehousesPage.findWarehouseIdByWarehouseName(warehouse);
+        int warehouseId = warehousesPage.findWarehouseId(warehouse);
         warehouseItemsPage.get(warehouseId);
         assertTrue(warehouseItemsPage.onPage());
     }

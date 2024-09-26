@@ -90,26 +90,84 @@ public class WarehousesPage {
         }
     }
 
+    // Get the row for a Warehouse entry by its id:
+    public WebElement getWarehouseRow(int id) {
+        String rowPath = "//tr[td[1][text() = '" + id + "']]";
+        return driver.findElement(By.xpath(rowPath));
+    }
+
+    // Get the row for a Warehouse entry by its name. No guarantee of uniqueness:
+    public WebElement getWarehouseRow(String name) {
+        String rowPath = "//tr[td[2][text() = '" + name + "']]";
+        return driver.findElement(By.xpath(rowPath));
+    }
+
     // Find the id of a Warehouse by its name:
-    public int findWarehouseIdByWarehouseName(String name) {
-        // Path points to table data in column 1: //[td[1]] of the row that contains the given name in column 2: //tr[td[2]text() = 'name']]:
-        String idXpath = "//tr[td[2][text() = '" + name + "']]/td[1]";
-        String idString = driver.findElement(By.xpath(idXpath)).getText();
+    public int findWarehouseId(String name) {
+        wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(name)));
+        String idString = getWarehouseRow(name).findElement(By.xpath(".//td[1]")).getText();
         return Integer.parseInt(idString);
     }
 
-    // Navigate to Warehouse-Items page:
+    // Find Warehouse name by its id:
+    public String findWarehouseName(int id) {
+        wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id)));
+        return getWarehouseRow(id).findElement(By.xpath(".//td[2]")).getText();
+    }
+
+    // Find Warehouse location by its id:
+    public String findWarehouseLocation(int id) {
+        wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id)));
+        return getWarehouseRow(id).findElement(By.xpath(".//td[3]")).getText();
+    }
+
+    // Find Warehouse location by its name:
+    public String findWarehouseLocation(String name) {
+        wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(name)));
+        return getWarehouseRow(name).findElement(By.xpath(".//td[3]")).getText();
+    }
+
+    // Find Warehouse capacity by its id:
+    public int findWarehouseCapacityByWarehouseId(int id) {
+        wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id)));
+        String idString = getWarehouseRow(id).findElement(By.xpath(".//td[4]"))
+                .getText();
+        return Integer.parseInt(idString);
+    }
+
+    // Navigate to Warehouse-Items page by Warehouse id:
+    public void clickInspectWarehouseButton(int id) {
+        wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id)));
+        getWarehouseRow(id).findElement(By.xpath(".//a[svg[@data-icon='magnifying-glass']]"))
+                .click();
+    }
+
+    // Navigate to Warehouse-Items page by Warehouse name:
     public void clickInspectWarehouseButton(String name) {
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("inspect-" + name))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("inspect-" + name))).click();
     }
 
-    // Navigate to Edit Warehouse form:
+    // Navigate to Edit Warehouse page by Warehouse id:
+    public void clickEditWarehouseButton(int id) {
+        wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id)));
+        getWarehouseRow(id).findElement(By.xpath(".//a[svg[@data-icon='pen-to-square']]"))
+                .click();
+    }
+
+    // Navigate to Edit Warehouse form by Warehouse Name:
     public void clickEditWarehouseButton(String name) {
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("edit-" + name))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-" + name))).click();
     }
 
-    // Delete Warehouse:
+    // Delete Warehouse page by Warehouse id:
+    public void clickDeleteWarehouseButton(int id) {
+        wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id)));
+        getWarehouseRow(id).findElement(By.xpath(".//a[svg[@data-icon='trash']]"))
+                .click();
+    }
+
+    // Delete Warehouse by name:
     public void clickDeleteWarehouseButton(String name) {
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("delete-" + name))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("delete-" + name))).click();
     }
 }

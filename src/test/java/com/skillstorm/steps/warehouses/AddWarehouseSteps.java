@@ -17,11 +17,11 @@ import java.util.List;
 import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertFalse;
 
-public class CreateNewWarehouseSteps {
+public class AddWarehouseSteps {
 
     private WebDriver driver;
     private WarehousesPage warehousesPage;
-    private List<String> createdWarehouses;
+    private List<Integer> createdWarehouses;
 
     @Before("@createWarehouse")
     public void before() {
@@ -58,7 +58,8 @@ public class CreateNewWarehouseSteps {
         assertTrue(result, name + "was added to the warehouse table");
 
         // Add to the list of warehouses that were created so that we can delete them afterwards
-        createdWarehouses.add(name);
+        int id = warehousesPage.findWarehouseId(name);
+        createdWarehouses.add(id);
     }
 
     @Then("I should not see the warehouse on the list with name {string}")
@@ -70,8 +71,8 @@ public class CreateNewWarehouseSteps {
     @After("@createWarehouse")
     public void after() {
         // Clean up all the warehouses we have created:
-        for(String name : createdWarehouses) {
-            warehousesPage.clickDeleteWarehouseButton(name);
+        for(int id : createdWarehouses) {
+            warehousesPage.clickDeleteWarehouseButton(id);
         }
         if (driver != null) {
             driver.quit();
