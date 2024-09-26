@@ -47,9 +47,9 @@ public class EditWarehouseSteps {
         warehousesPage.submitForm();
         assertTrue(warehousesPage.doesWarehouseExist(name));
 
-        warehouseId = warehousesPage.findWarehouseIdByWarehouseName(name);
-        assertEquals(warehousesPage.findWarehouseNameByWarehouseId(warehouseId), name);
-        assertEquals(warehousesPage.findWarehouseLocationByWarehouseId(warehouseId), location);
+        warehouseId = warehousesPage.findWarehouseId(name);
+        assertEquals(warehousesPage.findWarehouseName(warehouseId), name);
+        assertEquals(warehousesPage.findWarehouseLocation(warehouseId), location);
         assertEquals(warehousesPage.findWarehouseCapacityByWarehouseId(warehouseId), capacity);
     }
 
@@ -82,8 +82,8 @@ public class EditWarehouseSteps {
         assertTrue(warehousesPage.onPage());
         assertTrue(warehousesPage.doesWarehouseExist(updatedName));
 
-        assertEquals(warehousesPage.findWarehouseNameByWarehouseId(warehouseId), updatedName);
-        assertEquals(warehousesPage.findWarehouseLocationByWarehouseId(warehouseId), updatedLocation);
+        assertEquals(warehousesPage.findWarehouseName(warehouseId), updatedName);
+        assertEquals(warehousesPage.findWarehouseLocation(warehouseId), updatedLocation);
         assertEquals(warehousesPage.findWarehouseCapacityByWarehouseId(warehouseId), updatedCapacity);
 
         teardown(updatedName);

@@ -4,7 +4,6 @@ import com.skillstorm.pages.ItemsPage;
 import com.skillstorm.pages.WarehouseItemsPage;
 import com.skillstorm.pages.WarehousesPage;
 import io.cucumber.java.After;
-import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -50,7 +49,7 @@ public class DeleteWarehouseSteps {
 
     @And("the warehouse named {string} is empty")
     public void warehouseIsEmpty(String warehouseName) {
-        int warehouseId = warehousesPage.findWarehouseIdByWarehouseName(warehouseName);
+        int warehouseId = warehousesPage.findWarehouseId(warehouseName);
         warehouseItemsPage.get(warehouseId);
         assertTrue(warehouseItemsPage.onPage());
         assertTrue(warehouseItemsPage.isWarehouseEmpty());
@@ -68,7 +67,7 @@ public class DeleteWarehouseSteps {
         // Store the item in the warehouse:
         warehousesPage.get();
         assertTrue(warehousesPage.onPage());
-        int warehouseId = warehousesPage.findWarehouseIdByWarehouseName(warehouseName);
+        int warehouseId = warehousesPage.findWarehouseId(warehouseName);
         warehouseItemsPage.get(warehouseId);
         assertTrue(warehouseItemsPage.onPage());
         warehouseItemsPage.clickAddItems();
@@ -119,7 +118,7 @@ public class DeleteWarehouseSteps {
     }
 
     private void removeItemFromWarehouse(String warehouseName) {
-        int warehouseId = warehousesPage.findWarehouseIdByWarehouseName(warehouseName);
+        int warehouseId = warehousesPage.findWarehouseId(warehouseName);
         warehouseItemsPage.get(warehouseId);
         assertTrue(warehouseItemsPage.onPage());
         warehouseItemsPage.clickRemoveItems();
