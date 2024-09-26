@@ -9,9 +9,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +20,7 @@ public class AddWarehouseSteps {
 
     private WebDriver driver;
     private WarehousesPage warehousesPage;
+    private int currentWarehouseId;
     private List<Integer> createdWarehouses;
 
     @Before("@createWarehouse")
@@ -52,30 +51,25 @@ public class AddWarehouseSteps {
         warehousesPage.submitForm();
     }
 
-    @Then("I should see the warehouse on the list with name {string}")
-    public void iShouldSeeTheWarehouseInTheList(String name) {
-        boolean result = warehousesPage.doesWarehouseExist(name);
+    @Then("I should see the warehouse on the list with matching {string} {string} and {int}")
+    public void iShouldSeeTheWarehouseInTheList(String name, String location, int capacity) {
+        boolean result = warehousesPage.warehouseExists(name, location, capacity);
         assertTrue(result, name + "was added to the warehouse table");
 
+
         // Add to the list of warehouses that were created so that we can delete them afterwards
-        int id = warehousesPage.findWarehouseId(name);
-        createdWarehouses.add(id);
+        currentWarehouseId = warehousesPage.findWarehouseId(name, location, capacity);
+        warehousesPage.clickDeleteWarehouseButton(currentWarehouseId);
     }
 
-    @Then("I should not see the warehouse on the list with name {string}")
-    public void verifyWarehouseNotAdded(String name) {
-        boolean exists = warehousesPage.doesWarehouseExist(name);
+    @Then("I should not see the warehouse on the list with matching {string} {string} and {int}")
+    public void verifyWarehouseNotAdded(String name, String location, int capacity) {
+        boolean exists = warehousesPage.warehouseExists(name, location, capacity);
         assertFalse("Warehouse should not be added", exists);
     }
 
     @After("@createWarehouse")
     public void after() {
-        // Clean up all the warehouses we have created:
-        for(int id : createdWarehouses) {
-            warehousesPage.clickDeleteWarehouseButton(id);
-        }
         SingletonDriver.quitDriver();
     }
-
-
 }
