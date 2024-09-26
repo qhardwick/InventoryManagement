@@ -15,7 +15,7 @@ public class WarehousesPage {
     private final WebDriver driver;
     private final WebDriverWait wait;
     private final Navbar navbar;
-    private static final String url = "http://localhost:5173/warehouses";
+    private static final String url = "http://52.90.145.230/warehouses";
 
     // Button to open add new warehouse form:
     @FindBy(className = "btn-add")

@@ -15,7 +15,7 @@ public class ItemsPage {
     private final WebDriver driver;
     private final WebDriverWait wait;
     private final Navbar navbar;
-    private static final String url = "http://localhost:5173/items";
+    private static final String url = "http://52.90.145.230/items";
 
     // Button to open add new item form:
     @FindBy(className = "btn-add")
