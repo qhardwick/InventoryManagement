@@ -7,7 +7,7 @@ Feature: Add a new warehouse to the list
     When I click the add warehouse button
     And I enter a "<name>" and a "<location>" and a <capacity>
     And I click submit
-    Then I should see the warehouse on the list with name "<name>"
+    Then I should see the warehouse on the list with matching "<name>" "<location>" and <capacity>
 
     Examples:
     | name                    | location          | capacity |
@@ -19,10 +19,10 @@ Feature: Add a new warehouse to the list
     When I click the add warehouse button
     And I enter a "<name>" and a "<location>" and a <capacity>
     And I click submit
-    Then I should not see the warehouse on the list with name "<name>"
+    Then I should not see the warehouse on the list with matching "<name>" "<location>" and <capacity>
 
     Examples:
     | name                       |location               | capacity |
-  #  |                                  | Test Location 2 | 1000       |
+    |                                  | Test Location 2 | 1000       |
     | Test Warehouse 3 |                             | 1000       |
     | Test Warehouse 4 | Test Location 4 | 0             |

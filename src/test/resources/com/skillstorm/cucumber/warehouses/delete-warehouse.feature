@@ -4,22 +4,22 @@ Feature: Delete a warehouse
 
   Scenario Outline: Successfully delete an empty warehouse
     Given I am on the Warehouse Manager page
-    And a warehouse with the name "<warehouseName>" exists
-    And the warehouse named "<warehouseName>" is empty
-    When I click the delete button on the row for the "<warehouseName>"
-    Then the "<warehouseName>" should be removed from the list
+    And a warehouse with "<name>" "<location>" and <capacity> exists
+    And the warehouse is empty
+    When I click the delete button on the row for the warehouse
+    Then the warehouse should be removed from the list
 
   Examples:
-    | warehouseName |
-    | Test Warehouse  |
+    | name                     | location              | capacity |
+    | Test Warehouse  | Test Location     | 1000     |
 
   Scenario Outline: Cannot delete a warehouse because it is currently storing items
     Given I am on the Warehouse Manager page
-    And a warehouse with the name "<warehouseName>" exists
-    And the warehouse named "<warehouseName>" is not empty
-    When I click the delete button on the row for the "<warehouseName>"
-    Then the "<warehouseName>" should not be removed from the list
+    And a warehouse with "<name>" "<location>" and <capacity> exists
+    And the warehouse named is not empty
+    When I click the delete button on the row for the warehouse
+    Then the warehouse should not be removed from the list
 
     Examples:
-      | warehouseName |
-      | Test Warehouse  |
+      | name                     | location              | capacity |
+      | Test Warehouse 2  | Test Location 2    | 2000    |

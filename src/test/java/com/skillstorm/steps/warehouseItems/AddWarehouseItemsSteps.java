@@ -13,9 +13,7 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +32,8 @@ public class AddWarehouseItemsSteps {
     Map<String, Integer> createdWarehouseItemsMap;
     List<String> createdWarehouses;
     List<String> createdItems;
+
+    private int currentWarehouseId;
 
     // Set up tests:
     @Before("@addItemsToWarehouse")
@@ -56,7 +56,7 @@ public class AddWarehouseItemsSteps {
         warehousesPage.clickAddWarehouseButton();
         warehousesPage.fillOutNewWarehouseForm("Test Warehouse", "Test Location", 1000);
         warehousesPage.submitForm();
-        if(warehousesPage.doesWarehouseExist("Test Warehouse")) {
+        if(warehousesPage.warehouseExists("Test Warehouse", "Test Location", 1000)) {
             createdWarehouses = List.of("Test Warehouse");
         }
     }
@@ -73,8 +73,7 @@ public class AddWarehouseItemsSteps {
 
     @Given("I am on the Warehouse-Items page for a given {string}")
     public void iAmOnCorrectWarehouseItemsPage(String warehouse) {
-        int warehouseId = warehousesPage.findWarehouseId(warehouse);
-        warehouseItemsPage.get(warehouseId);
+        warehouseItemsPage.get(currentWarehouseId);
         assertTrue(warehouseItemsPage.onPage());
     }
 
@@ -154,7 +153,7 @@ public class AddWarehouseItemsSteps {
         // Delete the warehouse:
         warehousesPage.get();
         for(String warehouseName : createdWarehouses) {
-            warehousesPage.clickDeleteWarehouseButton(warehouseName);
+            warehousesPage.clickDeleteWarehouseButton(1);
         }
 
         // Delete items:

@@ -10,6 +10,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.Optional;
 
 public class WarehousesPage {
     private final WebDriver driver;
@@ -76,98 +78,106 @@ public class WarehousesPage {
         submitButton.click();
     }
 
-    // Verify the Warehouse had been added:
-    public boolean doesWarehouseExist(String name) {
-        try {
-            // Use a wait to ensure the table is loaded
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table//tbody")));
+    public boolean warehouseExists(int id) {
+        return getWarehouseRow(id).isPresent();
+    }
 
-            // Check if any elements match the provided name
-            return !driver.findElements(By.xpath("//tbody/tr/td[2][contains(text(), '" + name + "')]")).isEmpty();
-        } catch (NoSuchElementException e) {
-            // If the element cannot be found, return false
-            return false;
+    // Check for a Warehouse containing all 3 fields:
+    public boolean warehouseExists(String name, String location, int capacity) {
+        List<WebElement> matchingRows = driver.findElements(By.xpath("//tbody/tr[td[2][text()='" + name + "']]"));
+        String locationXpath = ".//td[3]";
+        String capacityXpath = ".//td[4]";
+
+
+        for(WebElement row : matchingRows) {
+            if(!location.equals(row.findElement(By.xpath(locationXpath)).getText())) {
+                continue;
+            }
+            if(Integer.parseInt(row.findElement(By.xpath(capacityXpath)).getText()) != capacity) {
+                continue;
+            }
+            return true;
         }
+        return false;
     }
 
     // Get the row for a Warehouse entry by its id:
-    public WebElement getWarehouseRow(int id) {
+    public Optional<WebElement> getWarehouseRow(int id) {
         String rowPath = "//tr[td[1][text() = '" + id + "']]";
-        return driver.findElement(By.xpath(rowPath));
+        try {
+            WebElement row = driver.findElement(By.xpath(rowPath));
+            return Optional.of(row);
+        } catch (NoSuchElementException e) {
+            return Optional.empty();
+        }
     }
 
-    // Get the row for a Warehouse entry by its name. No guarantee of uniqueness:
-    public WebElement getWarehouseRow(String name) {
-        String rowPath = "//tr[td[2][text() = '" + name + "']]";
-        return driver.findElement(By.xpath(rowPath));
+    // Get the row for a Warehouse entry by its name, location, and capacity:
+    public Optional<WebElement> getWarehouseRow(String name, String location, int capacity) {
+        List<WebElement> matchingRows = driver.findElements(By.xpath("//tbody/tr[td[2][text()='" + name + "']]"));
+        String locationXpath = ".//td[3]";
+        String capacityXpath = ".//td[4]";
+
+
+        for(WebElement row : matchingRows) {
+            if(!location.equals(row.findElement(By.xpath(locationXpath)).getText())) {
+                continue;
+            }
+            if(Integer.parseInt(row.findElement(By.xpath(capacityXpath)).getText()) != capacity) {
+                continue;
+            }
+            return Optional.of(row);
+        }
+        return Optional.empty();
     }
 
-    // Find the id of a Warehouse by its name:
-    public int findWarehouseId(String name) {
-        wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(name)));
-        String idString = getWarehouseRow(name).findElement(By.xpath(".//td[1]")).getText();
-        return Integer.parseInt(idString);
+    // Find the id of a Warehouse by its name, location, and capacity:
+    public int findWarehouseId(String name, String location, int capacity) {
+        Optional<WebElement> rowOptional = getWarehouseRow(name, location, capacity);
+        return rowOptional.map(webElement -> Integer.parseInt(webElement
+                .findElement(By.xpath(".//td[1]"))
+                .getText()))
+                .orElse(-1);
     }
 
     // Find Warehouse name by its id:
     public String findWarehouseName(int id) {
-        wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id)));
-        return getWarehouseRow(id).findElement(By.xpath(".//td[2]")).getText();
+        WebElement row = wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
+        return row.findElement(By.xpath(".//td[2]")).getText();
     }
 
     // Find Warehouse location by its id:
     public String findWarehouseLocation(int id) {
-        wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id)));
-        return getWarehouseRow(id).findElement(By.xpath(".//td[3]")).getText();
-    }
-
-    // Find Warehouse location by its name:
-    public String findWarehouseLocation(String name) {
-        wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(name)));
-        return getWarehouseRow(name).findElement(By.xpath(".//td[3]")).getText();
+        WebElement row = wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
+        return row.findElement(By.xpath(".//td[3]")).getText();
     }
 
     // Find Warehouse capacity by its id:
     public int findWarehouseCapacityByWarehouseId(int id) {
-        wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id)));
-        String idString = getWarehouseRow(id).findElement(By.xpath(".//td[4]"))
+        WebElement row = wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
+        String capacityString = row.findElement(By.xpath(".//td[4]"))
                 .getText();
-        return Integer.parseInt(idString);
+        return Integer.parseInt(capacityString);
     }
 
     // Navigate to Warehouse-Items page by Warehouse id:
     public void clickInspectWarehouseButton(int id) {
-        wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id)));
-        getWarehouseRow(id).findElement(By.xpath(".//a[svg[@data-icon='magnifying-glass']]"))
+        WebElement row =wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
+        row.findElement(By.xpath(".//a[href='/warehouses/" + id + "/items']"))
                 .click();
-    }
-
-    // Navigate to Warehouse-Items page by Warehouse name:
-    public void clickInspectWarehouseButton(String name) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("inspect-" + name))).click();
     }
 
     // Navigate to Edit Warehouse page by Warehouse id:
     public void clickEditWarehouseButton(int id) {
-        wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id)));
-        getWarehouseRow(id).findElement(By.xpath(".//a[svg[@data-icon='pen-to-square']]"))
+        WebElement row = wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
+        row.findElement(By.xpath(".//a[href='/warehouses/" + id + "']"))
                 .click();
-    }
-
-    // Navigate to Edit Warehouse form by Warehouse Name:
-    public void clickEditWarehouseButton(String name) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-" + name))).click();
     }
 
     // Delete Warehouse page by Warehouse id:
     public void clickDeleteWarehouseButton(int id) {
-        wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id)));
-        getWarehouseRow(id).findElement(By.xpath(".//a[svg[@data-icon='trash']]"))
+        WebElement row = wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
+        row.findElement(By.xpath(".//button"))
                 .click();
-    }
-
-    // Delete Warehouse by name:
-    public void clickDeleteWarehouseButton(String name) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("delete-" + name))).click();
     }
 }

@@ -11,9 +11,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-
-import java.time.Duration;
 
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -24,6 +21,8 @@ public class DeleteWarehouseSteps {
     private WarehousesPage warehousesPage;
     private ItemsPage itemsPage;
     private WarehouseItemsPage warehouseItemsPage;
+
+    private int currentWarehouseId;
 
     @Before("@deleteWarehouse")
     public void before() {
@@ -39,23 +38,24 @@ public class DeleteWarehouseSteps {
         assertTrue(warehousesPage.onPage());
     }
 
-    @And("a warehouse with the name {string} exists")
-    public void warehouseExists(String warehouseName) {
+    @And("a warehouse with {string} {string} and {int} exists")
+    public void warehouseExists(String name, String location, int capacity) {
         warehousesPage.clickAddWarehouseButton();
-        warehousesPage.fillOutNewWarehouseForm(warehouseName, "Test Location", 1000);
+        warehousesPage.fillOutNewWarehouseForm(name, "Test Location", 1000);
         warehousesPage.submitForm();
-        assertTrue(warehousesPage.doesWarehouseExist(warehouseName));
+        assertTrue(warehousesPage.warehouseExists(name, location, capacity));
+
+        currentWarehouseId = warehousesPage.findWarehouseId(name, location, capacity);
     }
 
-    @And("the warehouse named {string} is empty")
+    @And("the warehouse is empty")
     public void warehouseIsEmpty(String warehouseName) {
-        int warehouseId = warehousesPage.findWarehouseId(warehouseName);
-        warehouseItemsPage.get(warehouseId);
+        warehouseItemsPage.get(currentWarehouseId);
         assertTrue(warehouseItemsPage.onPage());
         assertTrue(warehouseItemsPage.isWarehouseEmpty());
     }
 
-    @And("the warehouse named {string} is not empty")
+    @And("the warehouse is not empty")
     public void theWarehouseIsNotEmpty(String warehouseName) {
         // Create an item to store in the warehouse:
         itemsPage.get();
@@ -67,8 +67,7 @@ public class DeleteWarehouseSteps {
         // Store the item in the warehouse:
         warehousesPage.get();
         assertTrue(warehousesPage.onPage());
-        int warehouseId = warehousesPage.findWarehouseId(warehouseName);
-        warehouseItemsPage.get(warehouseId);
+        warehouseItemsPage.get(currentWarehouseId);
         assertTrue(warehouseItemsPage.onPage());
         warehouseItemsPage.clickAddItems();
         warehouseItemsPage.fillOutAddItemsFormForAGivenItemId("Test Item", 1);
@@ -77,23 +76,23 @@ public class DeleteWarehouseSteps {
         assertFalse(warehouseItemsPage.isWarehouseEmpty());
     }
 
-    @When("I click the delete button on the row for the {string}")
-    public void clickDeleteWarehouse(String warehouseName) {
+    @When("I click the delete button on the row for the warehouse")
+    public void clickDeleteWarehouse() {
         warehousesPage.get();
         assertTrue(warehousesPage.onPage());
-        warehousesPage.clickDeleteWarehouseButton(warehouseName);
+        warehousesPage.clickDeleteWarehouseButton(currentWarehouseId);
     }
 
-    @Then("the {string} should be removed from the list")
-    public void warehouseDoesNotExist(String warehouseName) {
-        assertFalse(warehousesPage.doesWarehouseExist(warehouseName));
+    @Then("the warehouse should be removed from the list")
+    public void warehouseDoesNotExist() {
+        assertFalse(warehousesPage.warehouseExists(currentWarehouseId));
     }
 
     @Then("the {string} should not be removed from the list")
     public void warehouseStillExists(String warehouseName) {
         warehousesPage.get();
         assertTrue(warehousesPage.onPage());
-        assertTrue(warehousesPage.doesWarehouseExist(warehouseName));
+        assertTrue(warehousesPage.warehouseExists(currentWarehouseId));
         teardown(warehouseName);
     }
 
@@ -107,7 +106,7 @@ public class DeleteWarehouseSteps {
         // Delete the warehouse:
         warehousesPage.get();
         assertTrue(warehousesPage.onPage());
-        warehousesPage.clickDeleteWarehouseButton(warehouseName);
+        warehousesPage.clickDeleteWarehouseButton(currentWarehouseId);
     }
 
     private void deleteTheItem() {
@@ -118,8 +117,7 @@ public class DeleteWarehouseSteps {
     }
 
     private void removeItemFromWarehouse(String warehouseName) {
-        int warehouseId = warehousesPage.findWarehouseId(warehouseName);
-        warehouseItemsPage.get(warehouseId);
+        warehouseItemsPage.get(currentWarehouseId);
         assertTrue(warehouseItemsPage.onPage());
         warehouseItemsPage.clickRemoveItems();
         warehouseItemsPage.fillOutRemoveItemsFormForAGivenItem("Test Item", 1);

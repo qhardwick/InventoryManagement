@@ -11,9 +11,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-
-import java.time.Duration;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -45,9 +42,9 @@ public class EditWarehouseSteps {
         warehousesPage.clickAddWarehouseButton();
         warehousesPage.fillOutNewWarehouseForm(name, location, capacity);
         warehousesPage.submitForm();
-        assertTrue(warehousesPage.doesWarehouseExist(name));
+        assertTrue(warehousesPage.warehouseExists(name, location, capacity));
 
-        warehouseId = warehousesPage.findWarehouseId(name);
+        warehouseId = warehousesPage.findWarehouseId(name,location, capacity);
         assertEquals(warehousesPage.findWarehouseName(warehouseId), name);
         assertEquals(warehousesPage.findWarehouseLocation(warehouseId), location);
         assertEquals(warehousesPage.findWarehouseCapacityByWarehouseId(warehouseId), capacity);
@@ -80,7 +77,7 @@ public class EditWarehouseSteps {
     @Then("I should see that the warehouse has been updated to the new {string} {string} and {int}")
     public void warehouseHasBeenUpated(String updatedName, String updatedLocation, int updatedCapacity) {
         assertTrue(warehousesPage.onPage());
-        assertTrue(warehousesPage.doesWarehouseExist(updatedName));
+        assertTrue(warehousesPage.warehouseExists(updatedName, updatedLocation, updatedCapacity));
 
         assertEquals(warehousesPage.findWarehouseName(warehouseId), updatedName);
         assertEquals(warehousesPage.findWarehouseLocation(warehouseId), updatedLocation);
@@ -90,7 +87,7 @@ public class EditWarehouseSteps {
     }
 
     private void teardown(String updatedName) {
-        warehousesPage.clickDeleteWarehouseButton(updatedName);
+        warehousesPage.clickDeleteWarehouseButton(warehouseId);
     }
 
     @After("@editWarehouse")
