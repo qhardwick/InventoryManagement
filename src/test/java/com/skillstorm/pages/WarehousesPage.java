@@ -98,18 +98,40 @@ public class WarehousesPage {
         return Integer.parseInt(idString);
     }
 
+    // Find Warehouse name by its id:
+    public String findWarehouseNameByWarehouseId(int id) {
+        // Path points to table data in column 2: //[td[2]] of the row that contains the given id in column 1: //tr[td[1]text() = 'id']]:
+        String idXpath = "//tr[td[1][text() = '" + id + "']]/td[2]";
+        return driver.findElement(By.xpath(idXpath)).getText();
+    }
+
+    // Find Warehouse location by its id:
+    public String findWarehouseLocationByWarehouseId(int id) {
+        // Path points to table data in column 3: //[td[3]] of the row that contains the given id in column 1: //tr[td[1]text() = 'id']]:
+        String idXpath = "//tr[td[1][text() = '" + id + "']]/td[3]";
+        return driver.findElement(By.xpath(idXpath)).getText();
+    }
+
+    // Find Warehouse capacity by its id:
+    public int findWarehouseCapacityByWarehouseId(int id) {
+        // Path points to table data in column 4: //[td[4]] of the row that contains the given id in column 1: //tr[td[1]text() = 'id']]:
+        String idXpath = "//tr[td[1][text() = '" + id + "']]/td[4]";
+        String capacityString = driver.findElement(By.xpath(idXpath)).getText();
+        return Integer.parseInt(capacityString);
+    }
+
     // Navigate to Warehouse-Items page:
     public void clickInspectWarehouseButton(String name) {
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("inspect-" + name))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("inspect-" + name))).click();
     }
 
     // Navigate to Edit Warehouse form:
     public void clickEditWarehouseButton(String name) {
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("edit-" + name))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-" + name))).click();
     }
 
     // Delete Warehouse:
     public void clickDeleteWarehouseButton(String name) {
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("delete-" + name))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("delete-" + name))).click();
     }
 }

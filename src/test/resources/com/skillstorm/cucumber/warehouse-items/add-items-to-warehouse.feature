@@ -14,7 +14,7 @@ Feature: Add items to a warehouse
     Examples:
     | warehouse          | itemName | initialQuantity | quantity | finalQuantity |
     | Test Warehouse | Test Item  | 0                       | 2             | 2                     |
-    | Test Warehouse | Test Item  | 1                        | 9             | 10                     |
+    | Test Warehouse | Test Item  | 1                        | 9             | 10                   |
 
   Scenario Outline: Fail to add an item from the item list to store inside the warehouse because there is no space for it
     Given I am on the Warehouse-Items page for a given "<warehouse>"

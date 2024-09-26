@@ -5,6 +5,7 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -36,11 +37,13 @@ public class EditWarehousePage {
         this.driver = driver;
         wait = new WebDriverWait(driver, Duration.ofMillis(2000));
         navbar = new Navbar(driver);
+        PageFactory.initElements(driver, this);
     }
 
     // Navigate directly to Edit Warehouse page:
     public void get(int warehouseId) {
         url = "http://localhost:5173/warehouses/" + warehouseId;
+        driver.navigate().to(url);
     }
 
     // Verify we are on the Edit Warehouse page:
