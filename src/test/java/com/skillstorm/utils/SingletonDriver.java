@@ -24,7 +24,7 @@ public class SingletonDriver {
         options.addArguments("--remote-debugging-port=9222");
     }
 
-    public static WebDriver getChromeDriver() {
+    public static synchronized WebDriver getChromeDriver() {
         if(driver == null) {
             WebDriverManager.chromedriver().setup();
             setOptions();
@@ -34,5 +34,12 @@ public class SingletonDriver {
         return driver;
     }
 
-
+    // Set driver back to null on quit so that we can quit the driver without preventing other
+    // classes from reinitializing it:
+    public static void quitDriver() {
+        if(driver != null) {
+            driver.quit();
+        }
+        driver = null;
+    }
 }

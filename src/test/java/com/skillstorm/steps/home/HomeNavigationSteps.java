@@ -56,8 +56,6 @@ public class HomeNavigationSteps {
 
     @After("@homeNavigation")
     public void after() {
-        if(driver != null) {
-            driver.quit();
-        }
+        SingletonDriver.quitDriver();
     }
 }

@@ -72,8 +72,6 @@ public class NavbarNavigationSteps {
 
     @After("@navbarNavigation")
     public void after() {
-        if(driver != null) {
-            driver.quit();
-        }
+        SingletonDriver.quitDriver();
     }
 }

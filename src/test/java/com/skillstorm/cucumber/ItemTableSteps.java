@@ -219,8 +219,6 @@ public class ItemTableSteps {
 
     @After
     public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
+        SingletonDriver.quitDriver();
     }
 }

@@ -129,8 +129,6 @@ public class DeleteWarehouseSteps {
 
     @After("@deleteWarehouse")
     public void after() {
-        if(driver != null) {
-            driver.quit();
-        }
+        SingletonDriver.quitDriver();
     }
 }

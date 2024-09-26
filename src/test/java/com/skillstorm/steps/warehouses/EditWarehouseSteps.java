@@ -95,9 +95,7 @@ public class EditWarehouseSteps {
 
     @After("@editWarehouse")
     public void after() {
-        if(driver != null) {
-       //     driver.quit();
-        }
+        SingletonDriver.quitDriver();
     }
 
 }
