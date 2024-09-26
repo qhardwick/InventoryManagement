@@ -25,14 +25,14 @@ public class ItemTableSteps {
 
     @Given("I am on the Items page")
     public void i_am_on_the_items_page() {
-        WebDriverManager.chromedriver().driverVersion("129.0.6668.59").setup();
+        WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().window().maximize();
 
         // Initialize WebDriverWait with a timeout of 10 seconds
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        driver.get("http://localhost:5173/items");
+        driver.get("http://52.90.145.230/items");
     }
 
     @Then("I should see the following items:")
@@ -120,7 +120,7 @@ public class ItemTableSteps {
 
             // Send a POST request to add the item to the backend
             RestTemplate restTemplate = new RestTemplate();
-            String url = "http://localhost:8080/inventory/items";
+            String url = "http://3.95.37.62:8080/inventory/items";
             restTemplate.postForObject(url, itemDto, ItemDto.class);
         }
     }
@@ -143,6 +143,66 @@ public class ItemTableSteps {
                 WebElement deleteButton = row.findElement(By.cssSelector(".btn-icon"));
                 wait.until(ExpectedConditions.elementToBeClickable(deleteButton));
                 deleteButton.click();
+                break;
+            }
+        }
+    }
+
+    // New step definition for updating an item's volume
+    @When("I click the edit button for the item with Part Number {int}")
+    public void i_click_the_edit_button_for_the_item_with_part_number(Integer partNumber) {
+        // Wait for the table to be visible
+        WebElement table = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("table tbody")));
+
+        // Wait for the specific row to be present
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[text()='" + partNumber + "']/..")));
+
+        // Find the row with the given part number
+        List<WebElement> tableRows = table.findElements(By.tagName("tr"));
+
+        for (WebElement row : tableRows) {
+            List<WebElement> cells = row.findElements(By.tagName("td"));
+            if (cells.get(0).getText().equals(partNumber.toString())) {
+                // Wait for the edit button to be clickable
+                WebElement editButton = row.findElement(By.cssSelector(".btn-edit"));
+                wait.until(ExpectedConditions.elementToBeClickable(editButton));
+                editButton.click();
+                break;
+            }
+        }
+    }
+
+    @When("I update the volume to {int}")
+    public void i_update_the_volume_to(Integer volume) {
+        // Wait for the volume input field to be visible
+        WebElement volumeField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("volume")));
+
+        // Clear the field and enter the new volume
+        volumeField.clear();
+        volumeField.sendKeys(volume.toString());
+
+        // Submit the updated item
+        WebElement submitButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']")));
+        submitButton.click();
+    }
+
+    @Then("the item should be updated in the table with:")
+    public void the_item_should_be_updated_in_the_table_with(io.cucumber.datatable.DataTable dataTable) {
+        // Get updated item details
+        List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
+
+        // Wait for the table to be updated
+        wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("table tbody tr"), 0));
+
+        // Find the table and its rows
+        WebElement table = driver.findElement(By.cssSelector("table tbody"));
+        List<WebElement> tableRows = table.findElements(By.tagName("tr"));
+
+        // Find the updated row
+        for (WebElement row : tableRows) {
+            List<WebElement> cells = row.findElements(By.tagName("td"));
+            if (cells.get(1).getText().equals(rows.get(0).get("Name"))) {
+                Assertions.assertEquals(rows.get(0).get("Volume"), cells.get(2).getText()); // Volume
                 break;
             }
         }
