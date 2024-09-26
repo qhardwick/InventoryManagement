@@ -33,7 +33,8 @@ public class AddWarehouseItemsSteps {
     List<String> createdWarehouses;
     List<String> createdItems;
 
-    private int currentWarehouseId;
+    private int warehouseId;
+    private int itemId;
 
     // Set up tests:
     @Before("@addItemsToWarehouse")
@@ -55,7 +56,7 @@ public class AddWarehouseItemsSteps {
         warehousesPage.get();
         warehousesPage.clickAddWarehouseButton();
         warehousesPage.fillOutNewWarehouseForm("Test Warehouse", "Test Location", 1000);
-        warehousesPage.submitForm();
+        warehousesPage.clickSubmitForm();
         if(warehousesPage.warehouseExists("Test Warehouse", "Test Location", 1000)) {
             createdWarehouses = List.of("Test Warehouse");
         }
@@ -65,15 +66,15 @@ public class AddWarehouseItemsSteps {
         itemsPage.get();
         itemsPage.clickAddItemButton();
         itemsPage.fillOutNewItemForm("Test Item", 100);
-        itemsPage.submitForm();
-        if(itemsPage.doesItemExist("Test Item")) {
+        itemsPage.clickSubmitForm();
+        if(itemsPage.itemExists("Test Item", 100)) {
             createdItems = List.of("Test Item");
         }
     }
 
     @Given("I am on the Warehouse-Items page for a given {string}")
     public void iAmOnCorrectWarehouseItemsPage(String warehouse) {
-        warehouseItemsPage.get(currentWarehouseId);
+        warehouseItemsPage.get(warehouseId);
         assertTrue(warehouseItemsPage.onPage());
     }
 
@@ -159,7 +160,7 @@ public class AddWarehouseItemsSteps {
         // Delete items:
         itemsPage.get();
         for(String itemName : createdItems) {
-            itemsPage.deleteItemByName(itemName);
+            itemsPage.deleteItem(itemId);
         }
 
         SingletonDriver.quitDriver();

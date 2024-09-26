@@ -10,6 +10,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.Optional;
 
 public class ItemsPage {
     private final WebDriver driver;
@@ -62,40 +64,89 @@ public class ItemsPage {
 
         wait.until(ExpectedConditions.visibilityOf(nameField));
 
+        nameField.clear();
         nameField.sendKeys(name);
+
+        volumeField.clear();
         volumeField.sendKeys(String.valueOf(volume));
     }
 
     // Click on the button to submit the form:
-    public void submitForm() {
+    public void clickSubmitForm() {
         submitButton.click();
     }
 
-    // Verify the Item had been added:
-    public boolean doesItemExist(String name) {
-        try {
-            // Use a wait to ensure the table is loaded
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table//tbody")));
+    // See if an entry matches the given id:
+    public boolean itemExists(int id) {
+        return getItemRow(id).isPresent();
+    }
 
-            // Check if any elements match the provided name
-            return !driver.findElements(By.xpath("//tbody/tr/td[2][contains(text(), '" + name + "')]")).isEmpty();
+    // See if any entry matches both Item fields
+    public boolean itemExists(String name, int volume) {
+        List<WebElement> matchingRows = driver.findElements(By.xpath("//tbody/tr[td[2][text()='" + name + "']]"));
+        String volumeXpath = ".//td[3]";
+
+        for (WebElement row : matchingRows) {
+            if(Integer.parseInt(row.findElement(By.xpath(volumeXpath)).getText()) != volume) {
+                continue;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    // Get row for an Item by its id:
+    // I forgot why I chose to make this an optional but I'm too tired to change it now:
+    public Optional<WebElement> getItemRow(int id) {
+        String rowPath = "//tr[td[1][text() = '" + id + "']]";
+        try {
+            WebElement row = driver.findElement(By.xpath(rowPath));
+            return Optional.of(row);
         } catch (NoSuchElementException e) {
-            // If the element cannot be found, return false
-            return false;
+            return Optional.empty();
         }
     }
 
-    // Find the id for an item given its name:
-    // TODO: Caution. Item name not guaranteed to be unique. May need to refactor
-    public int getItemIdByItemName(String name) {
-        // Path points to table data in column 1: //[td[1]] of the row that contains the given name in column 2: //tr[td[2]text() = 'name']]:
-        String idXpath = "//tr[td[2][text() = '" + name + "']]/[td[1]]";
-        String idString = driver.findElement(By.xpath(idXpath)).getText();
-        return Integer.parseInt(idString);
+    // Get the row for an Item by its name and volume:
+    // I forgot why I chose to make this an optional but I'm too tired to change it now:
+    public Optional<WebElement> getItemRow(String name, int volume) {
+        List<WebElement> mathingRows = driver.findElements(By.xpath("//tbody/tr[td[2][text()='" + name + "']]"));
+        String volumeXpath = ".//td[3]";
+
+        for(WebElement row : mathingRows) {
+            if(Integer.parseInt(row.findElement(By.xpath(volumeXpath)).getText()) != volume) {
+                continue;
+            }
+            return Optional.of(row);
+        }
+        return Optional.empty();
+    }
+
+    // Find the id for an item given its name and volume:
+    public int findItemId(String name, int volume) {
+        Optional<WebElement> rowOptional = getItemRow(name, volume);
+        return rowOptional.map(webElement -> Integer.parseInt(webElement
+                .findElement(By.xpath(".//td[1]"))
+                .getText()))
+                .orElse(-1);
+    }
+
+    // Find Item name by its id:
+    public String findItemName(int id) {
+        WebElement row = wait.until(ExpectedConditions.visibilityOf(getItemRow(id).get()));
+        return row.findElement(By.xpath(".//td[2]")).getText();
+    }
+
+    // Find Item capacity by its id:
+    public int findItemCapacity(int id) {
+        WebElement row = wait.until(ExpectedConditions.visibilityOf(getItemRow(id).get()));
+        return Integer.parseInt(row.findElement(By.xpath(".//td[3]")).getText());
     }
 
     // Delete Item:
-    public void deleteItemByName(String name) {
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("delete-" + name))).click();
+    public void deleteItem(int id) {
+        WebElement row = wait.until(ExpectedConditions.visibilityOf(getItemRow(id).get()));
+        row.findElement(By.xpath(".//button"))
+                .click();
     }
 }
