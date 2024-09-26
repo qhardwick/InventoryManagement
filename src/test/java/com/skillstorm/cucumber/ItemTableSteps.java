@@ -1,6 +1,7 @@
 package com.skillstorm.cucumber;
 
 import com.skillstorm.dtos.ItemDto;
+import com.skillstorm.utils.SingletonDriver;
 import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -9,7 +10,6 @@ import io.cucumber.java.en.When;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.web.client.RestTemplate;
@@ -26,7 +26,7 @@ public class ItemTableSteps {
     @Given("I am on the Items page")
     public void i_am_on_the_items_page() {
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+        driver = SingletonDriver.getChromeDriver();
         driver.manage().window().maximize();
 
         // Initialize WebDriverWait with a timeout of 10 seconds
