@@ -16,10 +16,10 @@ Feature: Delete a warehouse
   Scenario Outline: Cannot delete a warehouse because it is currently storing items
     Given I am on the Warehouse Manager page
     And a warehouse with "<name>" "<location>" and <capacity> exists
-    And the warehouse named is not empty
+    And the warehouse is not empty
     When I click the delete button on the row for the warehouse
     Then the warehouse should not be removed from the list
 
-    Examples:
-      | name                     | location              | capacity |
-      | Test Warehouse 2  | Test Location 2    | 2000    |
+  Examples:
+    | name                     | location              | capacity |
+    | Test Warehouse 2  | Test Location 2    | 2000    |

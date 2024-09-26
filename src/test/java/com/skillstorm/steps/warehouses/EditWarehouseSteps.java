@@ -41,7 +41,7 @@ public class EditWarehouseSteps {
     public void matchingWarehouseExists(String name, String location, int capacity) {
         warehousesPage.clickAddWarehouseButton();
         warehousesPage.fillOutNewWarehouseForm(name, location, capacity);
-        warehousesPage.submitForm();
+        warehousesPage.clickSubmitForm();
         assertTrue(warehousesPage.warehouseExists(name, location, capacity));
 
         warehouseId = warehousesPage.findWarehouseId(name,location, capacity);

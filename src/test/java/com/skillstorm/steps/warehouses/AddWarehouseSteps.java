@@ -48,7 +48,7 @@ public class AddWarehouseSteps {
 
     @And("I click submit")
     public void iClickSubmit() {
-        warehousesPage.submitForm();
+        warehousesPage.clickSubmitForm();
     }
 
     @Then("I should see the warehouse on the list with matching {string} {string} and {int}")

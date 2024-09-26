@@ -68,13 +68,18 @@ public class WarehousesPage {
 
         wait.until(ExpectedConditions.visibilityOf(nameField));
 
+        nameField.clear();
         nameField.sendKeys(name);
+
+        locationField.clear();
         locationField.sendKeys(location);
+
+        capacityField.clear();
         capacityField.sendKeys(String.valueOf(capacity));
     }
 
     // Click on the button to submit the form:
-    public void submitForm() {
+    public void clickSubmitForm() {
         submitButton.click();
     }
 
@@ -102,6 +107,7 @@ public class WarehousesPage {
     }
 
     // Get the row for a Warehouse entry by its id:
+    // I forgot why I chose to make this an optional but I'm too tired to change it now:
     public Optional<WebElement> getWarehouseRow(int id) {
         String rowPath = "//tr[td[1][text() = '" + id + "']]";
         try {
@@ -113,6 +119,7 @@ public class WarehousesPage {
     }
 
     // Get the row for a Warehouse entry by its name, location, and capacity:
+    // I forgot why I chose to make this an optional but I'm too tired to change it now:
     public Optional<WebElement> getWarehouseRow(String name, String location, int capacity) {
         List<WebElement> matchingRows = driver.findElements(By.xpath("//tbody/tr[td[2][text()='" + name + "']]"));
         String locationXpath = ".//td[3]";
