@@ -1,6 +1,7 @@
 package com.skillstorm.steps.warehouses;
 
 import com.skillstorm.pages.WarehousesPage;
+import com.skillstorm.utils.SingletonDriver;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -25,8 +26,7 @@ public class AddWarehouseSteps {
 
     @Before("@createWarehouse")
     public void before() {
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver = SingletonDriver.getChromeDriver();
         warehousesPage = new WarehousesPage(driver);
         createdWarehouses = new ArrayList<>();
     }

@@ -3,6 +3,7 @@ package com.skillstorm.steps.warehouses;
 import com.skillstorm.pages.EditWarehousePage;
 import com.skillstorm.pages.Navbar;
 import com.skillstorm.pages.WarehousesPage;
+import com.skillstorm.utils.SingletonDriver;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -27,8 +28,7 @@ public class EditWarehouseSteps {
 
     @Before("@editWarehouse")
     public void before() {
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+        driver = SingletonDriver.getChromeDriver();
         warehousesPage = new WarehousesPage(driver);
         editWarehousePage = new EditWarehousePage(driver);
         navbar = new Navbar(driver);

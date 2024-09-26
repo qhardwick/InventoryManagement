@@ -3,15 +3,13 @@ package com.skillstorm.steps.home;
 import com.skillstorm.pages.HomePage;
 import com.skillstorm.pages.ItemsPage;
 import com.skillstorm.pages.WarehousesPage;
+import com.skillstorm.utils.SingletonDriver;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-
-import java.time.Duration;
 
 import static org.testng.Assert.assertTrue;
 
@@ -24,8 +22,7 @@ public class HomeNavigationSteps {
 
     @Before("@homeNavigation")
     public void before() {
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+        driver = SingletonDriver.getChromeDriver();
         homePage = new HomePage(driver);
         warehousesPage = new WarehousesPage(driver);
         itemsPage = new ItemsPage(driver);
