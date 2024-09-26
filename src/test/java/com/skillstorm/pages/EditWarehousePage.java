@@ -40,7 +40,7 @@ public class EditWarehousePage {
 
     // Navigate directly to Edit Warehouse page:
     public void get(int warehouseId) {
-        url = "http://localhost:5173/warehouses/" + warehouseId;
+        url = "http://52.90.145.230/warehouses/" + warehouseId;
     }
 
     // Verify we are on the Edit Warehouse page:

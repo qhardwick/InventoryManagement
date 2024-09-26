@@ -14,7 +14,7 @@ public class HomePage {
     private final WebDriver driver;
     private final WebDriverWait wait;
     private final Navbar navbar;
-    private final String url = "http://localhost:5173/";
+    private final String url = "http://52.90.145.230/";
 
     @FindBy(css = "a.landing-link[href='/warehouses']")
     private WebElement warehousesButton;

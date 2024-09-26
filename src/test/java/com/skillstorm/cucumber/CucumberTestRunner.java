@@ -14,3 +14,4 @@ import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
 public class CucumberTestRunner {
     // Empty class body, Cucumber and JUnit will handle the test execution
 }
+
