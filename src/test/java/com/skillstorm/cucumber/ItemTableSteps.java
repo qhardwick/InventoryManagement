@@ -25,7 +25,6 @@ public class ItemTableSteps {
 
     @Given("I am on the Items page")
     public void i_am_on_the_items_page() {
-        WebDriverManager.chromedriver().setup();
         driver = SingletonDriver.getChromeDriver();
         driver.manage().window().maximize();
 

@@ -1,5 +1,6 @@
 package com.skillstorm.utils;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -25,6 +26,7 @@ public class SingletonDriver {
 
     public static WebDriver getChromeDriver() {
         if(driver == null) {
+            WebDriverManager.chromedriver().setup();
             setOptions();
             driver = new ChromeDriver(options);
             driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
