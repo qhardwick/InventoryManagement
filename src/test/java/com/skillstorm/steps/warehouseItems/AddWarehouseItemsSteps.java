@@ -101,7 +101,7 @@ public class AddWarehouseItemsSteps {
     @And("I see the row for the item and input a {int}")
     public void iFillOutTheAddItemsForm(int quantity) {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -111,7 +111,7 @@ public class AddWarehouseItemsSteps {
     @And("I see the remove items form row for the item and input a {int}")
     public void iFillOutTheRemoveItemsForm(int quantity) {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
