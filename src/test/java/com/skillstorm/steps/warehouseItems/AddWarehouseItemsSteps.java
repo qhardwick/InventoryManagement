@@ -29,7 +29,7 @@ public class AddWarehouseItemsSteps {
     private ItemsPage itemsPage;
 
     // Created test objects:
-    Map<String, Integer> createdWarehouseItemsMap;
+    Map<Integer, Integer> createdWarehouseItemsMap;
     List<String> createdWarehouses;
     List<String> createdItems;
 
@@ -79,13 +79,13 @@ public class AddWarehouseItemsSteps {
     }
 
     @And("the warehouse is currently storing {int} of {string}")
-    public void getCurrentAmountOfItemInStorage(int initialQuantity, String itemName) {
+    public void getCurrentAmountOfItemInStorage(int initialQuantity, int itemName) {
         if(initialQuantity != 0) {
             warehouseItemsPage.clickAddItems();
-            warehouseItemsPage.fillOutAddItemsFormForAGivenItemId(itemName, initialQuantity);
+            warehouseItemsPage.fillOutAddItemsFormForAnItem(itemName, initialQuantity);
             warehouseItemsPage.clickButtonToSubmitAddItemsForm(itemName);
         }
-        int initialQuantityFromTable = warehouseItemsPage.getItemQuantityByItemName(itemName);
+        int initialQuantityFromTable = warehouseItemsPage.getItemQuantity(itemName);
         assertEquals(initialQuantityFromTable, initialQuantity);
     }
 
@@ -95,23 +95,23 @@ public class AddWarehouseItemsSteps {
     }
 
     @And("I see the row for the {string} and input a {int}")
-    public void iFillOutTheAddItemsForm(String itemName, int quantity) {
+    public void iFillOutTheAddItemsForm(int itemName, int quantity) {
 
-        warehouseItemsPage.fillOutAddItemsFormForAGivenItemId(itemName, quantity);
+        warehouseItemsPage.fillOutAddItemsFormForAnItem(itemName, quantity);
     }
 
     @And("the warehouse has sufficient capacity to store {string} of that {int}")
-    public void warehouseCanStoreItems(String itemName, int quantity) {
+    public void warehouseCanStoreItems(int itemName, int quantity) {
         assertTrue(warehouseItemsPage.hasEnoughCapacityForItems(itemName, quantity));
     }
 
     @And("the warehouse does not have sufficient capacity to store {string} of that {int}")
-    public void warehouseCannotStoreItems(String itemName, int quantity) {
+    public void warehouseCannotStoreItems(int itemName, int quantity) {
         assertFalse(warehouseItemsPage.hasEnoughCapacityForItems(itemName, quantity));
     }
 
     @And("I click the '+' button on the row for the {string}")
-    public void iClickTheButtonToSubmitAddItemsForm(String itemName) {
+    public void iClickTheButtonToSubmitAddItemsForm(int itemName) {
         try {
             warehouseItemsPage.clickButtonToSubmitAddItemsForm(itemName);
         } catch (UnhandledAlertException e) {
@@ -121,9 +121,9 @@ public class AddWarehouseItemsSteps {
     }
 
     @Then("I should see the warehouse is now storing {int} of {string} on the table")
-    public void theItemAndItsQuantityAreAddedToTheTable(int finalQuantity, String itemName) {
+    public void theItemAndItsQuantityAreAddedToTheTable(int finalQuantity, int itemName) {
 
-        int resultingQuantity = warehouseItemsPage.getItemQuantityByItemName(itemName);
+        int resultingQuantity = warehouseItemsPage.getItemQuantity(itemName);
         assertEquals(resultingQuantity, finalQuantity);
 
         // Add created items to the list for clean up:
@@ -131,13 +131,13 @@ public class AddWarehouseItemsSteps {
     }
 
     @Then("I should see that the {int} matches the {int} of {string} on the table")
-    public void theInitialQuantityForTheItemWasNotChanged(int initialQuantity, int finalQuantity, String itemName) {
-        int resultingQuantity = warehouseItemsPage.getItemQuantityByItemName(itemName);
+    public void theInitialQuantityForTheItemWasNotChanged(int initialQuantity, int finalQuantity) {
+        int resultingQuantity = warehouseItemsPage.getItemQuantity(itemId);
         assertEquals(resultingQuantity, initialQuantity);
         assertEquals(resultingQuantity, finalQuantity);
 
         if(initialQuantity > 0) {
-            createdWarehouseItemsMap.put(itemName, initialQuantity);
+            createdWarehouseItemsMap.put(itemId, initialQuantity);
         }
     }
 
@@ -145,7 +145,7 @@ public class AddWarehouseItemsSteps {
     @After("@addItemsToWarehouse")
     public void after() {
         // Empty the warehouse:
-        for(String itemName : createdWarehouseItemsMap.keySet()) {
+        for(Integer itemName : createdWarehouseItemsMap.keySet()) {
             warehouseItemsPage.clickRemoveItems();
             warehouseItemsPage.fillOutRemoveItemsFormForAGivenItem(itemName, createdWarehouseItemsMap.get(itemName));
             warehouseItemsPage.clickButtonToSubmitRemoveItemsForm(itemName);
