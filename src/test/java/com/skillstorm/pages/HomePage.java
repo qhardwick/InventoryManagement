@@ -1,5 +1,6 @@
 package com.skillstorm.pages;
 
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -41,11 +42,11 @@ public class HomePage {
 
     // Click on the main Warehouse Manager link on the home page:
     public void clickWarehousesLink() {
-        wait.until(ExpectedConditions.elementToBeClickable(warehousesButton)).click();
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(warehousesButton)).click();
     }
 
     // Click on the main Item Manager link on the home page:
     public void clickItemsLink() {
-        wait.until(ExpectedConditions.elementToBeClickable(itemsButton)).click();
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(itemsButton)).click();
     }
 }

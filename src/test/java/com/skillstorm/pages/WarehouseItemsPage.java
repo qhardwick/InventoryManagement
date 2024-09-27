@@ -58,7 +58,7 @@ public class WarehouseItemsPage {
         String headerXpath = ".//thead/tr/th[contains(text(), '" + title + "')]";
 
         WebElement mainTableTitle = warehouseItemsTable.findElement(By.xpath(headerXpath));
-        wait.until(ExpectedConditions.visibilityOf(mainTableTitle));
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(mainTableTitle));
         return mainTableTitle.isDisplayed();
     }
 
@@ -83,7 +83,7 @@ public class WarehouseItemsPage {
         WebElement itemRow;
         try {
             itemRow = warehouseItemsTable.findElement(By.xpath(rowXpath));
-            wait.until(ExpectedConditions.visibilityOf(itemRow));
+            wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(itemRow));
         } catch (NoSuchElementException e) {
             return 0;
         }
@@ -103,6 +103,7 @@ public class WarehouseItemsPage {
         // Find the button located on the row whose 2nd column contains our item name:
         String buttonXpath = ".//tr[td[1][text() = '" + itemId +"']]//td[6]//button";
         WebElement incrementButton = warehouseItemsTable.findElement(By.xpath(buttonXpath));
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(incrementButton));
         incrementButton.click();
     }
 
@@ -111,12 +112,13 @@ public class WarehouseItemsPage {
         // Find the button located on the row whose 2nd column contains our item name:
         String buttonXpath = ".//tr[td[1][text() = '" + itemId +"']]//td[7]//button";
         WebElement decrementButton = warehouseItemsTable.findElement(By.xpath(buttonXpath));
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(decrementButton));
         decrementButton.click();
     }
 
     // Click the Add Items button to open the Add Items form:
     public void clickAddItems() {
-        wait.until(ExpectedConditions.elementToBeClickable(addItemsButton));
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(addItemsButton));
         addItemsButton.click();
     }
 
@@ -136,7 +138,7 @@ public class WarehouseItemsPage {
 
         // Select the input field element:
         WebElement quantityInput = driver.findElement(By.xpath(quantityInputXpath));
-        wait.until(ExpectedConditions.visibilityOf(quantityInput));
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(quantityInput));
 
         // Clear the element to avoid potentially appending our value to data aready in the field:
         quantityInput.clear();
@@ -162,7 +164,7 @@ public class WarehouseItemsPage {
     // Check to see if we can increment without opening the add items menu:
     public boolean canIncrement(int itemId) {
         WebElement volumeValue = driver.findElement(By.xpath(".//tr[td[1][text() = '" + itemId +"']]/td[4]"));
-        wait.until(ExpectedConditions.visibilityOf(volumeValue));
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(volumeValue));
         int spaceNeeded = Integer.parseInt(volumeValue.getText());
 
         return getCurrentCapacity() >= spaceNeeded;
@@ -178,13 +180,13 @@ public class WarehouseItemsPage {
 
         // Click on the button:
         WebElement submitButton = driver.findElement(By.xpath(submitButtonXpath));
-        wait.until(ExpectedConditions.elementToBeClickable(submitButton));
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(submitButton));
         submitButton.click();
     }
 
     // Click the Remove Items button to open the Remove Items form:
     public void clickRemoveItems() {
-        wait.until(ExpectedConditions.elementToBeClickable(removeItemsButton));
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(removeItemsButton));
         removeItemsButton.click();
     }
 
@@ -199,7 +201,7 @@ public class WarehouseItemsPage {
 
         // Select the input field element:
         WebElement quantityInput = driver.findElement(By.xpath(quantityInputXpath));
-        wait.until(ExpectedConditions.visibilityOf(quantityInput));
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(quantityInput));
 
         // Clear the element to avoid potentially appending our value to data aready in the field:
         quantityInput.clear();
@@ -218,19 +220,19 @@ public class WarehouseItemsPage {
 
         // Click on the button:
         WebElement submitButton = driver.findElement(By.xpath(submitButtonXpath));
-        wait.until(ExpectedConditions.elementToBeClickable(submitButton));
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(submitButton));
         submitButton.click();
     }
 
     // Accept the alert notifying the user of an invalid request:
     public void acceptAlert() {
-        wait.until(ExpectedConditions.alertIsPresent());
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.alertIsPresent());
         driver.switchTo().alert().accept();
     }
 
     // Empty all contents from the Warehouse:
     public void emptyTheWarehouse() {
-        wait.until(ExpectedConditions.visibilityOf(warehouseItemsTable));
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(warehouseItemsTable));
         List<WebElement> itemRows = warehouseItemsTable.findElements(By.xpath(".//tbody/tr[td[1][normalize-space()]]"));
 
         for(WebElement row : itemRows) {

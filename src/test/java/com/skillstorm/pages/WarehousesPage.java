@@ -1,9 +1,6 @@
 package com.skillstorm.pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -59,14 +56,14 @@ public class WarehousesPage {
 
     // Click on the button to open the add new warehouse form:
     public void clickAddWarehouseButton() {
-        wait.until(ExpectedConditions.elementToBeClickable(addWarehouseButton));
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(addWarehouseButton));
         addWarehouseButton.click();
     }
 
     // Fill in the details of the new warehouse form:
     public void fillOutNewWarehouseForm(String name, String location, int capacity) {
 
-        wait.until(ExpectedConditions.visibilityOf(nameField));
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(nameField));
 
         nameField.clear();
         nameField.sendKeys(name);
@@ -121,7 +118,7 @@ public class WarehousesPage {
     // Get the row for a Warehouse entry by its name, location, and capacity:
     // I forgot why I chose to make this an optional but I'm too tired to change it now:
     public Optional<WebElement> getWarehouseRow(String name, String location, int capacity) {
-        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//table"))));
+        wait.ignoring(StaleElementReferenceException.class).ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//table"))));
         List<WebElement> matchingRows = driver.findElements(By.xpath("//tbody/tr[td[2][text()='" + name + "']]"));
         String locationXpath = ".//td[3]";
         String capacityXpath = ".//td[4]";
@@ -142,6 +139,7 @@ public class WarehousesPage {
     // Find the id of a Warehouse by its name, location, and capacity:
     public int findWarehouseId(String name, String location, int capacity) {
         Optional<WebElement> rowOptional = getWarehouseRow(name, location, capacity);
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(rowOptional.get()));
         return rowOptional.map(webElement -> Integer.parseInt(webElement
                 .findElement(By.xpath(".//td[1]"))
                 .getText()))
@@ -150,19 +148,19 @@ public class WarehousesPage {
 
     // Find Warehouse name by its id:
     public String findWarehouseName(int id) {
-        WebElement row = wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
+        WebElement row = wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
         return row.findElement(By.xpath(".//td[2]")).getText();
     }
 
     // Find Warehouse location by its id:
     public String findWarehouseLocation(int id) {
-        WebElement row = wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
+        WebElement row = wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
         return row.findElement(By.xpath(".//td[3]")).getText();
     }
 
     // Find Warehouse capacity by its id:
     public int findWarehouseCapacityByWarehouseId(int id) {
-        WebElement row = wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
+        WebElement row = wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
         String capacityString = row.findElement(By.xpath(".//td[4]"))
                 .getText();
         return Integer.parseInt(capacityString);
@@ -170,20 +168,20 @@ public class WarehousesPage {
 
     // Navigate to Warehouse-Items page by Warehouse id:
     public void clickInspectWarehouseButton(int id) {
-        WebElement row =wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
+        WebElement row =wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
         row.findElement(By.cssSelector("a[href='/warehouses/" + id + "/items']"))
                 .click();
     }
 
     // Navigate to Edit Warehouse page by Warehouse id:
     public void clickEditWarehouseButton(int id) {
-        WebElement row = wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
+        WebElement row = wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
         row.findElement(By.cssSelector("a[href='/warehouses/" + id + "']")).click();
     }
 
     // Delete Warehouse page by Warehouse id:
     public void clickDeleteWarehouseButton(int id) {
-        WebElement row = wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
+        WebElement row = wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
         row.findElement(By.xpath(".//button"))
                 .click();
     }

@@ -1,9 +1,6 @@
 package com.skillstorm.pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -55,14 +52,14 @@ public class ItemsPage {
 
     // Click on the button to open the add new warehouse form:
     public void clickAddItemButton() {
-        wait.until(ExpectedConditions.elementToBeClickable(addItemButton));
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(addItemButton));
         addItemButton.click();
     }
 
     // Fill in the details of the new warehouse form:
     public void fillOutNewItemForm(String name, int volume) {
 
-        wait.until(ExpectedConditions.visibilityOf(nameField));
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(nameField));
 
         nameField.clear();
         nameField.sendKeys(name);
@@ -133,19 +130,19 @@ public class ItemsPage {
 
     // Find Item name by its id:
     public String findItemName(int id) {
-        WebElement row = wait.until(ExpectedConditions.visibilityOf(getItemRow(id).get()));
+        WebElement row = wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(getItemRow(id).get()));
         return row.findElement(By.xpath(".//td[2]")).getText();
     }
 
     // Find Item capacity by its id:
     public int findItemCapacity(int id) {
-        WebElement row = wait.until(ExpectedConditions.visibilityOf(getItemRow(id).get()));
+        WebElement row = wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(getItemRow(id).get()));
         return Integer.parseInt(row.findElement(By.xpath(".//td[3]")).getText());
     }
 
     // Delete Item:
     public void deleteItem(int id) {
-        WebElement row = wait.until(ExpectedConditions.visibilityOf(getItemRow(id).get()));
+        WebElement row = wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(getItemRow(id).get()));
         row.findElement(By.xpath(".//button"))
                 .click();
     }

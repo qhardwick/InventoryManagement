@@ -1,5 +1,6 @@
 package com.skillstorm.pages;
 
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -51,28 +52,28 @@ public class EditWarehousePage {
 
     // Update name field:
     public void updateNameField(String name) {
-        wait.until(ExpectedConditions.elementToBeClickable(nameField));
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(nameField));
         nameField.clear();
         nameField.sendKeys(name);
     }
 
     // Update location field:
     public void updateLocationField(String location) {
-        wait.until(ExpectedConditions.elementToBeClickable(locationField));
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(locationField));
         locationField.clear();
         locationField.sendKeys(location);
     }
 
     // Update capacity field:
     public void updateCapacityField(int capacity) {
-        wait.until(ExpectedConditions.elementToBeClickable(capacityField));
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(capacityField));
         capacityField.clear();
         capacityField.sendKeys(String.valueOf(capacity));
     }
 
     // Click the update button to submit form:
     public void clickUpdateButton() {
-        wait.until(ExpectedConditions.elementToBeClickable(editButton));
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(editButton));
         editButton.click();
     }
 

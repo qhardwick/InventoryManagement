@@ -1,5 +1,6 @@
 package com.skillstorm.pages;
 
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -31,16 +32,16 @@ public class Navbar {
 
     // Click the company logo to navigate to Home:
     public void clickHome() {
-        wait.until(ExpectedConditions.elementToBeClickable(homeButton)).click();
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(homeButton)).click();
     }
 
     // Click the Warehouses Manager link to navigate to Warehouses page:
     public void clickWarehouses() {
-        wait.until(ExpectedConditions.elementToBeClickable(warehousesButton)).click();
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(warehousesButton)).click();
     }
 
     // Click the Items Manager link to navigate to the Items page:
     public void clickItems() {
-        wait.until(ExpectedConditions.elementToBeClickable(itemsButton)).click();
+        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(itemsButton)).click();
     }
 }

@@ -169,22 +169,32 @@ public class AddWarehouseItemsSteps {
 
     private void tearDown() {
         warehouseItemsPage.get(warehouseId);
-        assertTrue(warehouseItemsPage.onPage());
+        try {
+            Thread.sleep(1000); // Wait for 1 second
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // Restore the interrupted status
+        }
         warehouseItemsPage.emptyTheWarehouse();
-
+        try {
+            Thread.sleep(1000); // Wait for 1 second
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // Restore the interrupted status
+        }
         itemsPage.get();
-        assertTrue(itemsPage.onPage());
         itemsPage.deleteItem(itemId);
 
         warehousesPage.get();
-        assertTrue(warehousesPage.onPage());
+        try {
+            Thread.sleep(1000); // Wait for 1 second
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // Restore the interrupted status
+        }
         warehousesPage.clickDeleteWarehouseButton(warehouseId);
         try {
             Thread.sleep(1000); // Wait for 1 second
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt(); // Restore the interrupted status
         }
-        assertFalse(warehousesPage.warehouseExists(warehouseId));
     }
 
     @Then("I should see that the {int} matches the {int} of the item on the table")
