@@ -40,7 +40,7 @@ public class WarehouseItemsPage {
     public WarehouseItemsPage(WebDriver driver) {
         this.driver = driver;
         navbar = new Navbar(driver);
-        wait = new WebDriverWait(driver, Duration.ofMillis(2000));
+        wait = new WebDriverWait(driver, Duration.ofMillis(5000));
         PageFactory.initElements(driver, this);
     }
 

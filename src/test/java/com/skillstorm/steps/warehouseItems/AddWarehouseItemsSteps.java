@@ -129,6 +129,11 @@ public class AddWarehouseItemsSteps {
         try {
             warehouseItemsPage.clickButtonToSubmitRemoveItemsForm(itemId);
         } catch (UnhandledAlertException e) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
             Alert alert = driver.switchTo().alert();
             alert.accept();
         }
@@ -173,6 +178,8 @@ public class AddWarehouseItemsSteps {
         int resultingQuantity = warehouseItemsPage.getItemQuantity(itemId);
         assertEquals(resultingQuantity, initialQuantity);
         assertEquals(resultingQuantity, finalQuantity);
+
+        tearDown();
     }
 
     @After("@addItemsToWarehouse or @removeItemsFromWarehouse")
