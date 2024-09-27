@@ -124,7 +124,7 @@ public class WarehouseItemsPage {
 
     // Locate the row on the 'Items' table for a given item name. Applies when adding or removing items from the warehouse:
     private String getXpathForItemTableRow(int itemId) {
-        return "//table[.//th[text() = 'Items']]/tr[td[1][text() = '" + itemId + "']]";
+        return "//table[.//th[text() = 'Items']]//tr[td[1][text() = '" + itemId + "']]";
     }
 
     // Select the row for the given item. Input the number of items to add:
