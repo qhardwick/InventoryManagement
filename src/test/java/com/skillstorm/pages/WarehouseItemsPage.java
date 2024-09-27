@@ -86,6 +86,7 @@ public class WarehouseItemsPage {
         WebElement itemRow;
         try {
             itemRow = warehouseItemsTable.findElement(By.xpath(rowXpath));
+            wait.until(ExpectedConditions.visibilityOf(itemRow));
         } catch (NoSuchElementException e) {
             return 0;
         }
@@ -101,7 +102,7 @@ public class WarehouseItemsPage {
     }
 
     // Press the increment button to increase the count of a given item by 1:
-    public void pressTheIncrementButtonForAGivenItem(int itemId) {
+    public void clickIncrementButton(int itemId) {
         // Find the button located on the row whose 2nd column contains our item name:
         String buttonXpath = ".//tr[td[1][text() = '" + itemId +"']]//td[6]//button";
         WebElement incrementButton = warehouseItemsTable.findElement(By.xpath(buttonXpath));
@@ -109,9 +110,9 @@ public class WarehouseItemsPage {
     }
 
     // Press the decrement button to reduce the count of a given item by 1:
-    public void pressTheDecrementButtonForAGivenItem(int itemId) {
+    public void clickDecrementButton(int itemId) {
         // Find the button located on the row whose 2nd column contains our item name:
-        String buttonXpath = ".//tr[td[2][text() = '" + itemId +"']]//td[7]//button";
+        String buttonXpath = ".//tr[td[1][text() = '" + itemId +"']]//td[7]//button";
         WebElement decrementButton = warehouseItemsTable.findElement(By.xpath(buttonXpath));
         decrementButton.click();
     }
@@ -159,6 +160,15 @@ public class WarehouseItemsPage {
         int unitVolume = Integer.parseInt(driver.findElement(By.xpath(volumeXpath)).getText());
 
         return getCurrentCapacity() >= quantity * unitVolume;
+    }
+
+    // Check to see if we can increment without opening the add items menu:
+    public boolean canIncrement(int itemId) {
+        WebElement volumeValue = driver.findElement(By.xpath(".//tr[td[1][text() = '" + itemId +"']]/td[4]"));
+        wait.until(ExpectedConditions.visibilityOf(volumeValue));
+        int spaceNeeded = Integer.parseInt(volumeValue.getText());
+
+        return getCurrentCapacity() >= spaceNeeded;
     }
 
     // Click on the add button to add the items to the warehouse:
