@@ -15,7 +15,7 @@ import org.openqa.selenium.WebDriver;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class AddIncrementSteps {
+public class IncrementAndDecrementSteps {
 
     private WebDriver driver;
     private WarehouseItemsPage warehouseItemsPage;
@@ -26,7 +26,7 @@ public class AddIncrementSteps {
     private int itemId;
 
     // Set up tests:
-    @Before("@increment")
+    @Before("@increment or @decrement")
     public void before() {
         driver = SingletonDriver.getChromeDriver();
         warehouseItemsPage = new WarehouseItemsPage(driver);
@@ -85,8 +85,26 @@ public class AddIncrementSteps {
         warehouseItemsPage.clickIncrementButton(itemId);
     }
 
+    @When("I click the decrement button")
+    public void clickDecrement() {
+        warehouseItemsPage.clickDecrementButton(itemId);
+    }
+
     @Then("the {int} should have increased by one")
-    public void itIncremented(int finalQuantity) {
+    public void incremented(int finalQuantity) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        int result = warehouseItemsPage.getItemQuantity(itemId);
+        assertEquals(result, finalQuantity);
+
+        teardown();
+    }
+
+    @Then("the {int} should have decreased by one")
+    public void decremented(int finalQuantity) {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -110,7 +128,7 @@ public class AddIncrementSteps {
         warehousesPage.clickDeleteWarehouseButton(warehouseId);
     }
 
-    @After("@increment")
+    @After("@increment or @decrement")
     public void after() {
         SingletonDriver.quitDriver();
     }
