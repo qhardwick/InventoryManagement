@@ -69,7 +69,7 @@ class WarehouseControllerTest {
         warehouseItemResponse.setQuantity(2);
     }
 
-    //@Test
+    @Test
     @SneakyThrows
     void helloTest() {
         mockMvc.perform(get("/warehouses/hello")
@@ -79,7 +79,7 @@ class WarehouseControllerTest {
                 .andExpect(content().string("Hello"));
     }
 
-    //@Test
+    @Test
     @SneakyThrows
     void addWarehouseTest() {
         // Define stubbing:
@@ -104,7 +104,7 @@ class WarehouseControllerTest {
         assertEquals(1000, request.getCapacity());
     }
 
-    //@Test
+    @Test
     @SneakyThrows
     void findWarehouseByIdTest() {
         // Define stubbing:
@@ -118,7 +118,7 @@ class WarehouseControllerTest {
                 .andExpect(content().json(objectMapper.writeValueAsString(createdWarehouse)));
     }
 
-    //@Test
+    @Test
     @SneakyThrows
     void findAllWarehousesTest() {
         // Define stubbing:
@@ -132,7 +132,7 @@ class WarehouseControllerTest {
                 .andExpect(content().json(objectMapper.writeValueAsString(List.of(createdWarehouse))));
     }
 
-    //@Test
+    @Test
     @SneakyThrows
     void updateWarehouseTest() {
         // Define stubbing:
@@ -157,7 +157,7 @@ class WarehouseControllerTest {
         assertEquals(1000, request.getCapacity());
     }
 
-    //@Test
+    @Test
     @SneakyThrows
     void deleteWarehouseByIdTest() {
         // Call method to test:
@@ -171,7 +171,7 @@ class WarehouseControllerTest {
         assertEquals(1, idCaptor.getValue());
     }
 
-    //@Test
+    @Test
     @SneakyThrows
     void checkCapacityTest() {
         // Define stubbing:
@@ -190,7 +190,7 @@ class WarehouseControllerTest {
         assertEquals(1, idCaptor.getValue());
     }
 
-    //@Test
+    @Test
     @SneakyThrows
     void addItemsToWarehouseTest() {
         // Define stubbing:
@@ -208,7 +208,7 @@ class WarehouseControllerTest {
         verify(warehouseService).addItemsToWarehouse(1, 1, 2);
     }
 
-    //@Test
+    @Test
     @SneakyThrows
     void findAllItemsInAWarehouseTest() {
         // Define stubbing:
@@ -225,7 +225,7 @@ class WarehouseControllerTest {
         verify(warehouseService).findAllItemsInWarehouse(1);
     }
 
-    //@Test
+    @Test
     @SneakyThrows
     void deleteItemsFromWarehouseTest() {
         // Define return object with updated quantity:
