@@ -179,13 +179,7 @@ public class WarehouseItemsPage {
         // Click on the button:
         WebElement submitButton = driver.findElement(By.xpath(submitButtonXpath));
         wait.until(ExpectedConditions.elementToBeClickable(submitButton));
-        try {
-            submitButton.click();
-        } catch (UnhandledAlertException e) {
-            wait.until(ExpectedConditions.alertIsPresent());
-            driver.switchTo().alert().accept();
-        }
-
+        submitButton.click();
     }
 
     // Click the Remove Items button to open the Remove Items form:
@@ -225,12 +219,13 @@ public class WarehouseItemsPage {
         // Click on the button:
         WebElement submitButton = driver.findElement(By.xpath(submitButtonXpath));
         wait.until(ExpectedConditions.elementToBeClickable(submitButton));
-        try {
-            submitButton.click();
-        } catch (UnhandledAlertException e) {
-            wait.until(ExpectedConditions.alertIsPresent());
-            driver.switchTo().alert().accept();
-        }
+        submitButton.click();
+    }
+
+    // Accept the alert notifying the user of an invalid request:
+    public void acceptAlert() {
+        wait.until(ExpectedConditions.alertIsPresent());
+        driver.switchTo().alert().accept();
     }
 
     // Empty all contents from the Warehouse:
