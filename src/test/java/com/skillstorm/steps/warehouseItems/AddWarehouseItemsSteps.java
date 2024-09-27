@@ -28,11 +28,6 @@ public class AddWarehouseItemsSteps {
     private WarehousesPage warehousesPage;
     private ItemsPage itemsPage;
 
-    // Created test objects:
-    Map<Integer, Integer> createdWarehouseItemsMap;
-    List<String> createdWarehouses;
-    List<String> createdItems;
-
     private int warehouseId;
     private int itemId;
 
@@ -43,49 +38,42 @@ public class AddWarehouseItemsSteps {
         warehouseItemsPage = new WarehouseItemsPage(driver);
         warehousesPage = new WarehousesPage(driver);
         itemsPage = new ItemsPage(driver);
-
-        createdWarehouseItemsMap = new HashMap<>();
-        createdWarehouses = new ArrayList<>();
-        createdItems = new ArrayList<>();
-
-        createATestItem();
-        createATestWarehouse();
     }
 
-    private void createATestWarehouse() {
-        warehousesPage.get();
-        warehousesPage.clickAddWarehouseButton();
-        warehousesPage.fillOutNewWarehouseForm("Test Warehouse", "Test Location", 1000);
-        warehousesPage.clickSubmitForm();
-        if(warehousesPage.warehouseExists("Test Warehouse", "Test Location", 1000)) {
-            createdWarehouses = List.of("Test Warehouse");
-        }
-    }
-
-    private void createATestItem() {
+    @Given("An item with {string} and {int} exists")
+    public void itemExists(String itemName, int volume) {
         itemsPage.get();
+        assertTrue(itemsPage.onPage());
         itemsPage.clickAddItemButton();
-        itemsPage.fillOutNewItemForm("Test Item", 100);
+        itemsPage.fillOutNewItemForm(itemName, volume);
         itemsPage.clickSubmitForm();
-        if(itemsPage.itemExists("Test Item", 100)) {
-            createdItems = List.of("Test Item");
-        }
+        itemId = itemsPage.findItemId(itemName, volume);
     }
 
-    @Given("I am on the Warehouse-Items page for a given {string}")
-    public void iAmOnCorrectWarehouseItemsPage(String warehouse) {
+    @And("a {string} located in {string} with a capacity {int} exists")
+    public void warehouseExists(String warehouse, String location, int capacity) {
+        warehousesPage.get();
+        assertTrue(warehousesPage.onPage());
+        warehousesPage.clickAddWarehouseButton();
+        warehousesPage.fillOutNewWarehouseForm(warehouse, location, capacity);
+        warehousesPage.clickSubmitForm();
+        warehouseId = warehousesPage.findWarehouseId(warehouse, location, capacity);
+    }
+
+    @When("I click the inspect button for that warehouse")
+    public void iAmOnCorrectWarehouseItemsPage() {
         warehouseItemsPage.get(warehouseId);
         assertTrue(warehouseItemsPage.onPage());
     }
 
-    @And("the warehouse is currently storing {int} of {string}")
-    public void getCurrentAmountOfItemInStorage(int initialQuantity, int itemName) {
+    @And("the warehouse is currently storing {int} of the existing item")
+    public void getCurrentAmountOfItemInStorage(int initialQuantity) {
         if(initialQuantity != 0) {
             warehouseItemsPage.clickAddItems();
-            warehouseItemsPage.fillOutAddItemsFormForAnItem(itemName, initialQuantity);
-            warehouseItemsPage.clickButtonToSubmitAddItemsForm(itemName);
+            warehouseItemsPage.fillOutAddItemsFormForAnItem(itemId, initialQuantity);
+            warehouseItemsPage.clickButtonToSubmitAddItemsForm(itemId);
         }
-        int initialQuantityFromTable = warehouseItemsPage.getItemQuantity(itemName);
+        int initialQuantityFromTable = warehouseItemsPage.getItemQuantity(itemId);
         assertEquals(initialQuantityFromTable, initialQuantity);
     }
 
@@ -94,75 +82,74 @@ public class AddWarehouseItemsSteps {
         warehouseItemsPage.clickAddItems();
     }
 
-    @And("I see the row for the {string} and input a {int}")
-    public void iFillOutTheAddItemsForm(int itemName, int quantity) {
-
-        warehouseItemsPage.fillOutAddItemsFormForAnItem(itemName, quantity);
+    @And("I see the row for the item and input a {int}")
+    public void iFillOutTheAddItemsForm(int quantity) {
+        warehouseItemsPage.fillOutAddItemsFormForAnItem(itemId, quantity);
     }
 
-    @And("the warehouse has sufficient capacity to store {string} of that {int}")
-    public void warehouseCanStoreItems(int itemName, int quantity) {
-        assertTrue(warehouseItemsPage.hasEnoughCapacityForItems(itemName, quantity));
+    @And("the warehouse has sufficient capacity to store items of that {int}")
+    public void warehouseCanStoreItems(int quantity) {
+        assertTrue(warehouseItemsPage.hasEnoughCapacityForItems(itemId, quantity));
     }
 
-    @And("the warehouse does not have sufficient capacity to store {string} of that {int}")
-    public void warehouseCannotStoreItems(int itemName, int quantity) {
-        assertFalse(warehouseItemsPage.hasEnoughCapacityForItems(itemName, quantity));
+    @And("the warehouse does not have sufficient capacity to store items of that {int}")
+    public void warehouseCannotStoreItems(int quantity) {
+        assertFalse(warehouseItemsPage.hasEnoughCapacityForItems(itemId, quantity));
     }
 
-    @And("I click the '+' button on the row for the {string}")
-    public void iClickTheButtonToSubmitAddItemsForm(int itemName) {
+    @And("I click the '+' button to submit the form for that item")
+    public void iClickTheButtonToSubmitAddItemsForm() {
         try {
-            warehouseItemsPage.clickButtonToSubmitAddItemsForm(itemName);
+            warehouseItemsPage.clickButtonToSubmitAddItemsForm(itemId);
         } catch (UnhandledAlertException e) {
             Alert alert = driver.switchTo().alert();
             alert.accept();
         }
     }
 
-    @Then("I should see the warehouse is now storing {int} of {string} on the table")
-    public void theItemAndItsQuantityAreAddedToTheTable(int finalQuantity, int itemName) {
+    @Then("I should see the warehouse is now storing {int} of the item on the table")
+    public void theItemAndItsQuantityAreAddedToTheTable(int finalQuantity) {
 
-        int resultingQuantity = warehouseItemsPage.getItemQuantity(itemName);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        int resultingQuantity = warehouseItemsPage.getItemQuantity(itemId);
         assertEquals(resultingQuantity, finalQuantity);
 
-        // Add created items to the list for clean up:
-        createdWarehouseItemsMap.put(itemName, finalQuantity);
+        tearDown();
     }
 
-    @Then("I should see that the {int} matches the {int} of {string} on the table")
+    private void tearDown() {
+        warehouseItemsPage.get(warehouseId);
+        assertTrue(warehouseItemsPage.onPage());
+        warehouseItemsPage.emptyTheWarehouse();
+
+        itemsPage.get();
+        assertTrue(itemsPage.onPage());
+        itemsPage.deleteItem(itemId);
+
+        warehousesPage.get();
+        assertTrue(warehousesPage.onPage());
+        warehousesPage.clickDeleteWarehouseButton(warehouseId);
+        try {
+            Thread.sleep(1000); // Wait for 1 second
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // Restore the interrupted status
+        }
+        assertFalse(warehousesPage.warehouseExists(warehouseId));
+    }
+
+    @Then("I should see that the {int} matches the {int} of the item on the table")
     public void theInitialQuantityForTheItemWasNotChanged(int initialQuantity, int finalQuantity) {
         int resultingQuantity = warehouseItemsPage.getItemQuantity(itemId);
         assertEquals(resultingQuantity, initialQuantity);
         assertEquals(resultingQuantity, finalQuantity);
-
-        if(initialQuantity > 0) {
-            createdWarehouseItemsMap.put(itemId, initialQuantity);
-        }
     }
 
-    // Remove all created entries and close the driver:
     @After("@addItemsToWarehouse")
     public void after() {
-        // Empty the warehouse:
-        for(Integer itemName : createdWarehouseItemsMap.keySet()) {
-            warehouseItemsPage.clickRemoveItems();
-            warehouseItemsPage.fillOutRemoveItemsFormForAGivenItem(itemName, createdWarehouseItemsMap.get(itemName));
-            warehouseItemsPage.clickButtonToSubmitRemoveItemsForm(itemName);
-        }
-
-        // Delete the warehouse:
-        warehousesPage.get();
-        for(String warehouseName : createdWarehouses) {
-            warehousesPage.clickDeleteWarehouseButton(1);
-        }
-
-        // Delete items:
-        itemsPage.get();
-        for(String itemName : createdItems) {
-            itemsPage.deleteItem(itemId);
-        }
-
         SingletonDriver.quitDriver();
     }
 }
