@@ -32,7 +32,7 @@ public class AddWarehouseItemsSteps {
     private int itemId;
 
     // Set up tests:
-    @Before("@addItemsToWarehouse")
+    @Before("@addItemsToWarehouse or @removeItemsFromWarehouse")
     public void before() {
         driver = SingletonDriver.getChromeDriver();
         warehouseItemsPage = new WarehouseItemsPage(driver);
@@ -82,9 +82,20 @@ public class AddWarehouseItemsSteps {
         warehouseItemsPage.clickAddItems();
     }
 
+    @When("I click the Remove Items button")
+    public void iClickRemoveItemsButton() {
+        warehouseItemsPage.clickRemoveItems();
+    }
+
+
     @And("I see the row for the item and input a {int}")
     public void iFillOutTheAddItemsForm(int quantity) {
         warehouseItemsPage.fillOutAddItemsFormForAnItem(itemId, quantity);
+    }
+
+    @And("I see the remove items form row for the item and input a {int}")
+    public void iFillOutTheRemoveItemsForm(int quantity) {
+        warehouseItemsPage.fillOutRemoveItemsFormForAGivenItem(itemId, quantity);
     }
 
     @And("the warehouse has sufficient capacity to store items of that {int}")
@@ -97,10 +108,26 @@ public class AddWarehouseItemsSteps {
         assertFalse(warehouseItemsPage.hasEnoughCapacityForItems(itemId, quantity));
     }
 
+    @And("I input a {int} less than or equal to the initial quantity")
+    public void removingValidNumberOfAnItem(int quantity) {
+        int initialQuantity = warehouseItemsPage.getItemQuantity(itemId);
+        assertTrue(quantity <= initialQuantity);
+    }
+
     @And("I click the '+' button to submit the form for that item")
     public void iClickTheButtonToSubmitAddItemsForm() {
         try {
             warehouseItemsPage.clickButtonToSubmitAddItemsForm(itemId);
+        } catch (UnhandledAlertException e) {
+            Alert alert = driver.switchTo().alert();
+            alert.accept();
+        }
+    }
+
+    @And("I click the '-' button to submit the form for that item")
+    public void iClickTheButtonToSubmitRemoveItemsForm() {
+        try {
+            warehouseItemsPage.clickButtonToSubmitRemoveItemsForm(itemId);
         } catch (UnhandledAlertException e) {
             Alert alert = driver.switchTo().alert();
             alert.accept();
@@ -148,7 +175,7 @@ public class AddWarehouseItemsSteps {
         assertEquals(resultingQuantity, finalQuantity);
     }
 
-    @After("@addItemsToWarehouse")
+    @After("@addItemsToWarehouse or @removeItemsFromWarehouse")
     public void after() {
         SingletonDriver.quitDriver();
     }
