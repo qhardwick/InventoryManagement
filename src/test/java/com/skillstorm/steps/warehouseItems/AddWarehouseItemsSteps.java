@@ -136,20 +136,12 @@ public class AddWarehouseItemsSteps {
 
     @And("I click the '+' button to submit the form for that item")
     public void iClickTheButtonToSubmitAddItemsForm() {
-        try {
-            warehouseItemsPage.clickButtonToSubmitAddItemsForm(itemId);
-        } catch (UnhandledAlertException e) {
-            warehouseItemsPage.acceptAlert();
-        }
+        warehouseItemsPage.clickButtonToSubmitAddItemsForm(itemId);
     }
 
     @And("I click the '-' button to submit the form for that item")
     public void iClickTheButtonToSubmitRemoveItemsForm() {
-        try {
-            warehouseItemsPage.clickButtonToSubmitRemoveItemsForm(itemId);
-        } catch (UnhandledAlertException e) {
-            warehouseItemsPage.acceptAlert();
-        }
+        warehouseItemsPage.clickButtonToSubmitRemoveItemsForm(itemId);
     }
 
 

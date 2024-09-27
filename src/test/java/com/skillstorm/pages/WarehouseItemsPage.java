@@ -124,7 +124,7 @@ public class WarehouseItemsPage {
 
     // Locate the row on the 'Items' table for a given item name. Applies when adding or removing items from the warehouse:
     private String getXpathForItemTableRow(int itemId) {
-        return "//table[.//th[text() = 'Items']]//tr[td[1][text() = '" + itemId + "']]";
+        return "//table[.//th[text() = 'Items']]/tr[td[1][text() = '" + itemId + "']]";
     }
 
     // Select the row for the given item. Input the number of items to add:
@@ -182,6 +182,7 @@ public class WarehouseItemsPage {
         WebElement submitButton = driver.findElement(By.xpath(submitButtonXpath));
         wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(submitButton));
         submitButton.click();
+        handleAlert();
     }
 
     // Click the Remove Items button to open the Remove Items form:
@@ -222,12 +223,17 @@ public class WarehouseItemsPage {
         WebElement submitButton = driver.findElement(By.xpath(submitButtonXpath));
         wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(submitButton));
         submitButton.click();
+        handleAlert();
     }
 
-    // Accept the alert notifying the user of an invalid request:
-    public void acceptAlert() {
-        wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.alertIsPresent());
-        driver.switchTo().alert().accept();
+    private void handleAlert() {
+        try {
+            wait.ignoring(StaleElementReferenceException.class)
+                    .until(ExpectedConditions.alertIsPresent());
+            driver.switchTo().alert().accept();
+        } catch (TimeoutException e) {
+            // No alert was triggered. Move on with your day.
+        }
     }
 
     // Empty all contents from the Warehouse:
