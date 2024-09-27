@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 public class WarehouseItemsPage {
 
@@ -77,9 +78,9 @@ public class WarehouseItemsPage {
     }
 
     // See if a specific item is already being stored in the warehouse:
-    public int getItemQuantityByItemName(String itemName) {
+    public int getItemQuantity(int itemId) {
         // xpath for an item row from the main table:
-        String rowXpath = ".//tr[td[2][text() = '" + itemName + "']]";
+        String rowXpath = ".//tr[td[1][text() = '" + itemId + "']]";
 
         // See if an instance of the item is currently being stored:
         WebElement itemRow;
@@ -100,17 +101,17 @@ public class WarehouseItemsPage {
     }
 
     // Press the increment button to increase the count of a given item by 1:
-    public void pressTheIncrementButtonForAGivenItem(String itemName) {
+    public void pressTheIncrementButtonForAGivenItem(int itemId) {
         // Find the button located on the row whose 2nd column contains our item name:
-        String buttonXpath = ".//tr[td[2][text() = '" + itemName +"']]//td[6]//button";
+        String buttonXpath = ".//tr[td[1][text() = '" + itemId +"']]//td[6]//button";
         WebElement incrementButton = warehouseItemsTable.findElement(By.xpath(buttonXpath));
         incrementButton.click();
     }
 
     // Press the decrement button to reduce the count of a given item by 1:
-    public void pressTheDecrementButtonForAGivenItem(String itemName) {
+    public void pressTheDecrementButtonForAGivenItem(int itemId) {
         // Find the button located on the row whose 2nd column contains our item name:
-        String buttonXpath = ".//tr[td[2][text() = '" + itemName +"']]//td[7]//button";
+        String buttonXpath = ".//tr[td[2][text() = '" + itemId +"']]//td[7]//button";
         WebElement decrementButton = warehouseItemsTable.findElement(By.xpath(buttonXpath));
         decrementButton.click();
     }
@@ -122,16 +123,15 @@ public class WarehouseItemsPage {
     }
 
     // Locate the row on the 'Items' table for a given item name. Applies when adding or removing items from the warehouse:
-    // TODO: Caution. Item names may not be unique. May need to refactor.
-    private String getXpathForItemTableRowByItemName(String itemName) {
-        return "//table[.//th[text() = 'Items']]//tr[td[2][text() = '" + itemName + "']]";
+    private String getXpathForItemTableRow(int itemId) {
+        return "//table[.//th[text() = 'Items']]//tr[td[1][text() = '" + itemId + "']]";
     }
 
     // Select the row for the given item. Input the number of items to add:
-    public void fillOutAddItemsFormForAGivenItemId(String itemName, int quantity) {
+    public void fillOutAddItemsFormForAnItem(int itemId, int quantity) {
 
         // xpath to select the row in the 'Items' table with the specified itemId in the first column:
-        String rowXpath = getXpathForItemTableRowByItemName(itemName);
+        String rowXpath = getXpathForItemTableRow(itemId);
 
         // xpath to select the input field for the given row:
         String quantityInputXpath = rowXpath + "//input";
@@ -148,9 +148,9 @@ public class WarehouseItemsPage {
     }
 
     // Check to see if the warehouse has enough capacity to store the items:
-    public boolean hasEnoughCapacityForItems(String itemName, int quantity) {
+    public boolean hasEnoughCapacityForItems(int itemId, int quantity) {
         // xpath to select the row in the 'Items' table with the specified itemId in the first column:
-        String rowXpath = getXpathForItemTableRowByItemName(itemName);
+        String rowXpath = getXpathForItemTableRow(itemId);
 
         // xpath to select the volume of a single item:
         String volumeXpath = rowXpath + "/td[3]";
@@ -162,9 +162,9 @@ public class WarehouseItemsPage {
     }
 
     // Click on the add button to add the items to the warehouse:
-    public void clickButtonToSubmitAddItemsForm(String itemName) {
+    public void clickButtonToSubmitAddItemsForm(int itemId) {
         // xpath to select the row in the 'Items' table with the specified itemId in the first column:
-        String rowXpath = getXpathForItemTableRowByItemName(itemName);
+        String rowXpath = getXpathForItemTableRow(itemId);
 
         // There should only be one button on the row, so our xpath can just look for the only button on the row:
         String submitButtonXpath = rowXpath + "//button";
@@ -181,10 +181,10 @@ public class WarehouseItemsPage {
     }
 
     // Select the row for the given part number. Input the number of items to remove:
-    public void fillOutRemoveItemsFormForAGivenItem(String itemName, int quantity) {
+    public void fillOutRemoveItemsFormForAGivenItem(int itemId, int quantity) {
 
         // xpath to select the row in the 'Items' table with the specified itemId in the first column:
-        String rowXpath = getXpathForItemTableRowByItemName(itemName);
+        String rowXpath = getXpathForItemTableRow(itemId);
 
         // xpath to select the input field for the given row:
         String quantityInputXpath = rowXpath + "//input";
@@ -201,9 +201,9 @@ public class WarehouseItemsPage {
     }
 
     // Click on the remove button to remove the items to the warehouse:
-    public void clickButtonToSubmitRemoveItemsForm(String itemName) {
+    public void clickButtonToSubmitRemoveItemsForm(int itemId) {
         // xpath to select the row in the 'Items' table with the specified itemId in the first column:
-        String rowXpath = getXpathForItemTableRowByItemName(itemName);
+        String rowXpath = getXpathForItemTableRow(itemId);
 
         // There should only be one button on the row, so our xpath can just look for the only button on the row:
         String submitButtonXpath = rowXpath + "//button";
@@ -213,5 +213,19 @@ public class WarehouseItemsPage {
         submitButton.click();
     }
 
+    // Empty all contents from the Warehouse:
+    public void emptyTheWarehouse() {
+        wait.until(ExpectedConditions.visibilityOf(warehouseItemsTable));
+        List<WebElement> itemRows = warehouseItemsTable.findElements(By.xpath(".//tbody/tr[td[1][normalize-space()]]"));
+
+        for(WebElement row : itemRows) {
+            int itemId = Integer.parseInt(row.findElement(By.xpath(".//td[1]")).getText());
+            int quantity = Integer.parseInt(row.findElement(By.xpath(".//td[3]")).getText());
+
+            removeItemsButton.click();
+            fillOutRemoveItemsFormForAGivenItem(itemId, quantity);
+            clickButtonToSubmitRemoveItemsForm(itemId);
+        }
+    }
 
 }
