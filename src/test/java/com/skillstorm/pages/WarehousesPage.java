@@ -171,15 +171,14 @@ public class WarehousesPage {
     // Navigate to Warehouse-Items page by Warehouse id:
     public void clickInspectWarehouseButton(int id) {
         WebElement row =wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
-        row.findElement(By.xpath(".//a[href='/warehouses/" + id + "/items']"))
+        row.findElement(By.cssSelector("a[href='/warehouses/" + id + "/items']"))
                 .click();
     }
 
     // Navigate to Edit Warehouse page by Warehouse id:
     public void clickEditWarehouseButton(int id) {
         WebElement row = wait.until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
-        row.findElement(By.xpath(".//a[href='/warehouses/" + id + "']"))
-                .click();
+        row.findElement(By.cssSelector("a[href='/warehouses/" + id + "']")).click();
     }
 
     // Delete Warehouse page by Warehouse id:

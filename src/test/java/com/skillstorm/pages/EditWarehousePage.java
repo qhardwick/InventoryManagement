@@ -33,7 +33,7 @@ public class EditWarehousePage {
 
     public EditWarehousePage(WebDriver driver) {
         this.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofMillis(2000));
+        wait = new WebDriverWait(driver, Duration.ofMillis(5000));
         navbar = new Navbar(driver);
         PageFactory.initElements(driver, this);
     }
@@ -41,6 +41,7 @@ public class EditWarehousePage {
     // Navigate directly to Edit Warehouse page:
     public void get(int warehouseId) {
         url = "http://52.90.145.230/warehouses/" + warehouseId;
+        driver.navigate().to(url);
     }
 
     // Verify we are on the Edit Warehouse page:
