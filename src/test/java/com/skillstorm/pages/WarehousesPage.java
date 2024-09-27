@@ -43,7 +43,7 @@ public class WarehousesPage {
     public WarehousesPage(WebDriver driver) {
         this.driver = driver;
         this.navbar = new Navbar(driver);
-        wait = new WebDriverWait(driver, Duration.ofMillis(2000));
+        wait = new WebDriverWait(driver, Duration.ofMillis(5000));
         PageFactory.initElements(driver, this);
     }
 
@@ -121,6 +121,7 @@ public class WarehousesPage {
     // Get the row for a Warehouse entry by its name, location, and capacity:
     // I forgot why I chose to make this an optional but I'm too tired to change it now:
     public Optional<WebElement> getWarehouseRow(String name, String location, int capacity) {
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//table"))));
         List<WebElement> matchingRows = driver.findElements(By.xpath("//tbody/tr[td[2][text()='" + name + "']]"));
         String locationXpath = ".//td[3]";
         String capacityXpath = ".//td[4]";
