@@ -5,9 +5,7 @@ Feature: Item Management
 
   Scenario: View the list of items
     Given I am on the Items page
-    Then I should see the following items:
-      | Part Number | Name        | Volume |
-      | 1           | Car         | 500    |
+    Then I should see an item with the name "Car" and volume "500"
 
   Scenario: Add a new item
     Given I am on the Items page
@@ -17,24 +15,20 @@ Feature: Item Management
       | Stroller | 78     |
     And I submit the item
     Then the new item should be added to the table with:
-      | Name      | Volume |
-      | Stroller  | 78     |
+      | Name     | Volume |
+      | Stroller | 78     |
 
   Scenario: Update an existing item
     Given I am on the Items page
-    And the following item exists:
-      | Name      | Volume |
-      | Stroller  | 78     |
-    When I click the edit button for the item with Part Number 1
-    And I update the volume to 65
+    And an item with the name "Stroller" and volume "78" exists
+    When I click the edit button for the item named "Stroller"
+    And I update the volume to "65"
     Then the item should be updated in the table with:
-      | Name      | Volume |
-      | Stroller  | 65     |
+      | Name     | Volume |
+      | Stroller | 65     |
 
   Scenario: Delete an existing item
     Given I am on the Items page
-    And the following item exists:
-      | Name      | Volume |
-      | Stroller  | 65     |
-    When I click the delete button for the item with Part Number 1
+    And an item with the name "Stroller" and volume "65" exists
+    When I click the delete button for the item named "Stroller"
     Then the item should be removed from the table
