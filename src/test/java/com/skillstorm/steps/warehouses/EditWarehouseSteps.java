@@ -50,23 +50,39 @@ public class EditWarehouseSteps {
         assertEquals(warehousesPage.findWarehouseCapacityByWarehouseId(warehouseId), capacity);
     }
 
-    @When("I click the edit warehouse button for the {string}")
-    public void clickEditButtonForWarehouse(String name) {
-        // Doing this to set the url on the page:
+    @When("I click the edit warehouse button for that warehouse")
+    public void clickEditButtonForWarehouse() {
+        // We need to first use the command to navigate directly to the Edit Warehouses page to
+        // initialize it and the set the url:
         editWarehousePage.get(warehouseId);
+        assertTrue(editWarehousePage.onpage());
+
+        // But let's test the button:
+        navbar.clickWarehouses();
+        assertTrue(warehousesPage.onPage());
+        warehousesPage.clickEditWarehouseButton(warehouseId);
     }
 
-    @And("I am on the Edit Warehouse page")
+    @Then("I should be on the Edit Warehouses page")
     public void onEditWarehousePage() {
         assertTrue(editWarehousePage.onpage());
     }
 
-    @And("I update the form with new {string} {string} and {int}")
+    @When("I update the form with new {string} {string} and {int}")
     public void updateWarehouseForm(String updatedName, String updatedLocation, int updatedCapacity) {
-        System.out.println("\n\nUpdated data: " + updatedName + " " + updatedLocation + " " + updatedCapacity);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         editWarehousePage.updateNameField(updatedName);
         editWarehousePage.updateLocationField(updatedLocation);
         editWarehousePage.updateCapacityField(updatedCapacity);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @And("I click the Edit Warehouse button")
@@ -76,7 +92,13 @@ public class EditWarehouseSteps {
 
     @Then("I should see that the warehouse has been updated to the new {string} {string} and {int}")
     public void warehouseHasBeenUpated(String updatedName, String updatedLocation, int updatedCapacity) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         assertTrue(warehousesPage.onPage());
+        assertTrue(warehousesPage.warehouseExists(warehouseId));
         assertTrue(warehousesPage.warehouseExists(updatedName, updatedLocation, updatedCapacity));
 
         assertEquals(warehousesPage.findWarehouseName(warehouseId), updatedName);
