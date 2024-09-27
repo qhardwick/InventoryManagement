@@ -116,22 +116,12 @@ public class AddWarehouseItemsSteps {
 
     @And("I click the '+' button to submit the form for that item")
     public void iClickTheButtonToSubmitAddItemsForm() {
-        try {
-            warehouseItemsPage.clickButtonToSubmitAddItemsForm(itemId);
-        } catch (UnhandledAlertException e) {
-            Alert alert = driver.switchTo().alert();
-            alert.accept();
-        }
+        warehouseItemsPage.clickButtonToSubmitAddItemsForm(itemId);
     }
 
     @And("I click the '-' button to submit the form for that item")
     public void iClickTheButtonToSubmitRemoveItemsForm() {
-        try {
-            warehouseItemsPage.clickButtonToSubmitRemoveItemsForm(itemId);
-        } catch (UnhandledAlertException e) {
-            Alert alert = driver.switchTo().alert();
-            alert.accept();
-        }
+        warehouseItemsPage.clickButtonToSubmitRemoveItemsForm(itemId);
     }
 
     @Then("I should see the warehouse is now storing {int} of the item on the table")
@@ -173,6 +163,8 @@ public class AddWarehouseItemsSteps {
         int resultingQuantity = warehouseItemsPage.getItemQuantity(itemId);
         assertEquals(resultingQuantity, initialQuantity);
         assertEquals(resultingQuantity, finalQuantity);
+
+        tearDown();
     }
 
     @After("@addItemsToWarehouse or @removeItemsFromWarehouse")

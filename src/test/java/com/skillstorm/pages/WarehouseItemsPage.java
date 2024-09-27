@@ -1,9 +1,6 @@
 package com.skillstorm.pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -40,7 +37,7 @@ public class WarehouseItemsPage {
     public WarehouseItemsPage(WebDriver driver) {
         this.driver = driver;
         navbar = new Navbar(driver);
-        wait = new WebDriverWait(driver, Duration.ofMillis(2000));
+        wait = new WebDriverWait(driver, Duration.ofMillis(5000));
         PageFactory.initElements(driver, this);
     }
 
@@ -181,7 +178,14 @@ public class WarehouseItemsPage {
 
         // Click on the button:
         WebElement submitButton = driver.findElement(By.xpath(submitButtonXpath));
-        submitButton.click();
+        wait.until(ExpectedConditions.elementToBeClickable(submitButton));
+        try {
+            submitButton.click();
+        } catch (UnhandledAlertException e) {
+            wait.until(ExpectedConditions.alertIsPresent());
+            driver.switchTo().alert().accept();
+        }
+
     }
 
     // Click the Remove Items button to open the Remove Items form:
@@ -220,7 +224,13 @@ public class WarehouseItemsPage {
 
         // Click on the button:
         WebElement submitButton = driver.findElement(By.xpath(submitButtonXpath));
-        submitButton.click();
+        wait.until(ExpectedConditions.elementToBeClickable(submitButton));
+        try {
+            submitButton.click();
+        } catch (UnhandledAlertException e) {
+            wait.until(ExpectedConditions.alertIsPresent());
+            driver.switchTo().alert().accept();
+        }
     }
 
     // Empty all contents from the Warehouse:

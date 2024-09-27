@@ -16,7 +16,7 @@ public class Navbar {
 
     public Navbar(WebDriver driver) {
         this.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofMillis(2000));
+        wait = new WebDriverWait(driver, Duration.ofMillis(5000));
         PageFactory.initElements(driver, this);
     }
 
