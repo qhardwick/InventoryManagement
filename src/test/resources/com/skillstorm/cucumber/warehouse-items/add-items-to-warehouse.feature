@@ -32,4 +32,4 @@ Feature: Add items to a warehouse
     Examples:
       | itemName   | volume | warehouse             | location             | capacity | initialQuantity | quantity | finalQuantity |
       | Test Item 3  | 300       | Test Warehouse 3 | Test Location 3 | 3000       | 0                      | 11              | 0             |
-      | Test Item 2  | 400       | Test Warehouse 4 | Test Location 4 | 4000       | 4                      | 10              | 4             |
+      | Test Item 4  | 400       | Test Warehouse 4 | Test Location 4 | 4000       | 4                      | 10              | 4             |

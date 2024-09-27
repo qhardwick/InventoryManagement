@@ -105,10 +105,10 @@ public class EditWarehouseSteps {
         assertEquals(warehousesPage.findWarehouseLocation(warehouseId), updatedLocation);
         assertEquals(warehousesPage.findWarehouseCapacityByWarehouseId(warehouseId), updatedCapacity);
 
-        teardown(updatedName);
+        teardown();
     }
 
-    private void teardown(String updatedName) {
+    private void teardown() {
         warehousesPage.clickDeleteWarehouseButton(warehouseId);
     }
 
