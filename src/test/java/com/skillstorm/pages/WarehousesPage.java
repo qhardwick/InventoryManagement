@@ -118,26 +118,34 @@ public class WarehousesPage {
     // Get the row for a Warehouse entry by its name, location, and capacity:
     // I forgot why I chose to make this an optional but I'm too tired to change it now:
     public Optional<WebElement> getWarehouseRow(String name, String location, int capacity) {
-        wait.ignoring(StaleElementReferenceException.class).ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//table"))));
+        // Find all rows with the specified name in the second column:
         List<WebElement> matchingRows = driver.findElements(By.xpath("//tbody/tr[td[2][text()='" + name + "']]"));
-        String locationXpath = ".//td[3]";
-        String capacityXpath = ".//td[4]";
 
-
-        for(WebElement row : matchingRows) {
-            if(!location.equals(row.findElement(By.xpath(locationXpath)).getText())) {
+        for (WebElement row : matchingRows) {
+            // Check location (third column)
+            String rowLocation = row.findElement(By.xpath(".//td[3]")).getText();
+            if (!rowLocation.equals(location)) {
                 continue;
             }
-            if(Integer.parseInt(row.findElement(By.xpath(capacityXpath)).getText()) != capacity) {
-                continue;
+
+            // Check capacity (fourth column)
+            String capacityText = row.findElement(By.xpath(".//td[4]")).getText();
+            int rowCapacity = Integer.parseInt(capacityText);
+
+            if (rowCapacity == capacity) {
+                return Optional.of(row);
             }
-            return Optional.of(row);
         }
         return Optional.empty();
     }
 
     // Find the id of a Warehouse by its name, location, and capacity:
     public int findWarehouseId(String name, String location, int capacity) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Optional<WebElement> rowOptional = getWarehouseRow(name, location, capacity);
         wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(rowOptional.get()));
         return rowOptional.map(webElement -> Integer.parseInt(webElement
