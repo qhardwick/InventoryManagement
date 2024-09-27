@@ -52,7 +52,17 @@ public class AddWarehouseItemsSteps {
 
     @And("a {string} located in {string} with a capacity {int} exists")
     public void warehouseExists(String warehouse, String location, int capacity) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         warehousesPage.get();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         assertTrue(warehousesPage.onPage());
         warehousesPage.clickAddWarehouseButton();
         warehousesPage.fillOutNewWarehouseForm(warehouse, location, capacity);
@@ -90,11 +100,21 @@ public class AddWarehouseItemsSteps {
 
     @And("I see the row for the item and input a {int}")
     public void iFillOutTheAddItemsForm(int quantity) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         warehouseItemsPage.fillOutAddItemsFormForAnItem(itemId, quantity);
     }
 
     @And("I see the remove items form row for the item and input a {int}")
     public void iFillOutTheRemoveItemsForm(int quantity) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         warehouseItemsPage.fillOutRemoveItemsFormForAGivenItem(itemId, quantity);
     }
 
@@ -116,13 +136,22 @@ public class AddWarehouseItemsSteps {
 
     @And("I click the '+' button to submit the form for that item")
     public void iClickTheButtonToSubmitAddItemsForm() {
-        warehouseItemsPage.clickButtonToSubmitAddItemsForm(itemId);
+        try {
+            warehouseItemsPage.clickButtonToSubmitAddItemsForm(itemId);
+        } catch (UnhandledAlertException e) {
+            warehouseItemsPage.acceptAlert();
+        }
     }
 
     @And("I click the '-' button to submit the form for that item")
     public void iClickTheButtonToSubmitRemoveItemsForm() {
-        warehouseItemsPage.clickButtonToSubmitRemoveItemsForm(itemId);
+        try {
+            warehouseItemsPage.clickButtonToSubmitRemoveItemsForm(itemId);
+        } catch (UnhandledAlertException e) {
+            warehouseItemsPage.acceptAlert();
+        }
     }
+
 
     @Then("I should see the warehouse is now storing {int} of the item on the table")
     public void theItemAndItsQuantityAreAddedToTheTable(int finalQuantity) {
