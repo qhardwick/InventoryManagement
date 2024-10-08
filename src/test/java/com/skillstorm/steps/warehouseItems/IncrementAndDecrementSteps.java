@@ -39,7 +39,7 @@ public class IncrementAndDecrementSteps {
         itemsPage.get();
         assertTrue(itemsPage.onPage());
         itemsPage.clickAddItemButton();
-        itemsPage.fillOutNewItemForm(itemName, volume);
+        itemsPage.setNewItemForm(itemName, volume);
         itemsPage.clickSubmitForm();
         itemId = itemsPage.findItemId(itemName, volume);
         assertTrue(itemsPage.itemExists(itemId));
@@ -50,7 +50,7 @@ public class IncrementAndDecrementSteps {
         warehousesPage.get();
         assertTrue(warehousesPage.onPage());
         warehousesPage.clickAddWarehouseButton();
-        warehousesPage.fillOutNewWarehouseForm(warehouseName, warehouseLocation, capacity);
+        warehousesPage.setNewWarehouseForm(warehouseName, warehouseLocation, capacity);
         warehousesPage.clickSubmitForm();
         warehouseId = warehousesPage.findWarehouseId(warehouseName, warehouseLocation, capacity);
         assertTrue(warehousesPage.warehouseExists(warehouseId));
@@ -65,8 +65,8 @@ public class IncrementAndDecrementSteps {
     @And("it is already storing some {int} of the item")
     public void alreadyStoringTheItem(int quantity) {
         warehouseItemsPage.clickAddItems();
-        warehouseItemsPage.fillOutAddItemsFormForAnItem(itemId, quantity);
-        warehouseItemsPage.clickButtonToSubmitAddItemsForm(itemId);
+        warehouseItemsPage.setAddItemsForm(itemId, quantity);
+        warehouseItemsPage.clickSubmitAddItemsForm(itemId);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {

@@ -57,7 +57,7 @@ public class ItemsPage {
     }
 
     // Fill in the details of the new warehouse form:
-    public void fillOutNewItemForm(String name, int volume) {
+    public void setNewItemForm(String name, int volume) {
 
         wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(nameField));
 

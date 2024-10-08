@@ -10,14 +10,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static org.testng.Assert.*;
 
@@ -45,7 +38,7 @@ public class AddWarehouseItemsSteps {
         itemsPage.get();
         assertTrue(itemsPage.onPage());
         itemsPage.clickAddItemButton();
-        itemsPage.fillOutNewItemForm(itemName, volume);
+        itemsPage.setNewItemForm(itemName, volume);
         itemsPage.clickSubmitForm();
         itemId = itemsPage.findItemId(itemName, volume);
     }
@@ -65,7 +58,7 @@ public class AddWarehouseItemsSteps {
         }
         assertTrue(warehousesPage.onPage());
         warehousesPage.clickAddWarehouseButton();
-        warehousesPage.fillOutNewWarehouseForm(warehouse, location, capacity);
+        warehousesPage.setNewWarehouseForm(warehouse, location, capacity);
         warehousesPage.clickSubmitForm();
         warehouseId = warehousesPage.findWarehouseId(warehouse, location, capacity);
     }
@@ -80,8 +73,8 @@ public class AddWarehouseItemsSteps {
     public void getCurrentAmountOfItemInStorage(int initialQuantity) {
         if(initialQuantity != 0) {
             warehouseItemsPage.clickAddItems();
-            warehouseItemsPage.fillOutAddItemsFormForAnItem(itemId, initialQuantity);
-            warehouseItemsPage.clickButtonToSubmitAddItemsForm(itemId);
+            warehouseItemsPage.setAddItemsForm(itemId, initialQuantity);
+            warehouseItemsPage.clickSubmitAddItemsForm(itemId);
         }
         int initialQuantityFromTable = warehouseItemsPage.getItemQuantity(itemId);
         assertEquals(initialQuantityFromTable, initialQuantity);
@@ -105,7 +98,7 @@ public class AddWarehouseItemsSteps {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        warehouseItemsPage.fillOutAddItemsFormForAnItem(itemId, quantity);
+        warehouseItemsPage.setAddItemsForm(itemId, quantity);
     }
 
     @And("I see the remove items form row for the item and input a {int}")
@@ -115,17 +108,17 @@ public class AddWarehouseItemsSteps {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        warehouseItemsPage.fillOutRemoveItemsFormForAGivenItem(itemId, quantity);
+        warehouseItemsPage.setRemoveItemsForm(itemId, quantity);
     }
 
     @And("the warehouse has sufficient capacity to store items of that {int}")
     public void warehouseCanStoreItems(int quantity) {
-        assertTrue(warehouseItemsPage.hasEnoughCapacityForItems(itemId, quantity));
+        assertTrue(warehouseItemsPage.hasCapacityForItems(itemId, quantity));
     }
 
     @And("the warehouse does not have sufficient capacity to store items of that {int}")
     public void warehouseCannotStoreItems(int quantity) {
-        assertFalse(warehouseItemsPage.hasEnoughCapacityForItems(itemId, quantity));
+        assertFalse(warehouseItemsPage.hasCapacityForItems(itemId, quantity));
     }
 
     @And("I input a {int} less than or equal to the initial quantity")
@@ -136,12 +129,12 @@ public class AddWarehouseItemsSteps {
 
     @And("I click the '+' button to submit the form for that item")
     public void iClickTheButtonToSubmitAddItemsForm() {
-        warehouseItemsPage.clickButtonToSubmitAddItemsForm(itemId);
+        warehouseItemsPage.clickSubmitAddItemsForm(itemId);
     }
 
     @And("I click the '-' button to submit the form for that item")
     public void iClickTheButtonToSubmitRemoveItemsForm() {
-        warehouseItemsPage.clickButtonToSubmitRemoveItemsForm(itemId);
+        warehouseItemsPage.clickSubmitRemoveItemsForm(itemId);
     }
 
 

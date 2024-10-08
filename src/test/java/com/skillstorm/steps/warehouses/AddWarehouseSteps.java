@@ -43,7 +43,7 @@ public class AddWarehouseSteps {
 
     @And("I enter a {string} and a {string} and a {int}")
     public void iFillOutTheAddWarehouseForm(String name, String location, int capacity) {
-        warehousesPage.fillOutNewWarehouseForm(name, location, capacity);
+        warehousesPage.setNewWarehouseForm(name, location, capacity);
     }
 
     @And("I click submit")
