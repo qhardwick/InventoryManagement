@@ -12,8 +12,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
 
-import java.time.Duration;
-
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
@@ -44,7 +42,7 @@ public class DeleteWarehouseSteps {
     @And("a warehouse with {string} {string} and {int} exists")
     public void warehouseExists(String name, String location, int capacity) {
         warehousesPage.clickAddWarehouseButton();
-        warehousesPage.fillOutNewWarehouseForm(name, location, capacity);
+        warehousesPage.setNewWarehouseForm(name, location, capacity);
         warehousesPage.clickSubmitForm();
         assertTrue(warehousesPage.warehouseExists(name, location, capacity));
 
@@ -56,7 +54,7 @@ public class DeleteWarehouseSteps {
     public void warehouseIsEmpty() {
         warehouseItemsPage.get(warehouseId);
         assertTrue(warehouseItemsPage.onPage());
-        assertTrue(warehouseItemsPage.isWarehouseEmpty());
+        assertTrue(warehouseItemsPage.warehouseIsEmpty());
     }
 
     @And("the warehouse is not empty")
@@ -65,7 +63,7 @@ public class DeleteWarehouseSteps {
         itemsPage.get();
         assertTrue(itemsPage.onPage());
         itemsPage.clickAddItemButton();
-        itemsPage.fillOutNewItemForm("Test Item", 25);
+        itemsPage.setNewItemForm("Test Item", 25);
         itemsPage.clickSubmitForm();
         // Store the id so that we can use it to reference the object later:
         itemId = itemsPage.findItemId("Test Item", 25);
@@ -74,8 +72,8 @@ public class DeleteWarehouseSteps {
         warehouseItemsPage.get(warehouseId);
         assertTrue(warehouseItemsPage.onPage());
         warehouseItemsPage.clickAddItems();
-        warehouseItemsPage.fillOutAddItemsFormForAnItem(itemId, 1);
-        warehouseItemsPage.clickButtonToSubmitAddItemsForm(itemId);
+        warehouseItemsPage.setAddItemsForm(itemId, 1);
+        warehouseItemsPage.clickSubmitAddItemsForm(itemId);
         // Unless we want to split the warehouseExists method into separate methods for expecting true
         // vs expecting false, we cannot implicitly wait for element visibility or invisibility so we have to sleep:
         try {
@@ -84,7 +82,7 @@ public class DeleteWarehouseSteps {
             Thread.currentThread().interrupt(); // Restore the interrupted status
         }
 
-        assertFalse(warehouseItemsPage.isWarehouseEmpty());
+        assertFalse(warehouseItemsPage.warehouseIsEmpty());
     }
 
     @When("I click the delete button on the row for the warehouse")
@@ -159,7 +157,7 @@ public class DeleteWarehouseSteps {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt(); // Restore the interrupted status
         }
-        assertTrue(warehouseItemsPage.isWarehouseEmpty());
+        assertTrue(warehouseItemsPage.warehouseIsEmpty());
     }
 
     @After("@deleteWarehouse")

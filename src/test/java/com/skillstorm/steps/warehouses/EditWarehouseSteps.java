@@ -40,14 +40,14 @@ public class EditWarehouseSteps {
     @And("a warehouse exists with the {string} {string} and {int}")
     public void matchingWarehouseExists(String name, String location, int capacity) {
         warehousesPage.clickAddWarehouseButton();
-        warehousesPage.fillOutNewWarehouseForm(name, location, capacity);
+        warehousesPage.setNewWarehouseForm(name, location, capacity);
         warehousesPage.clickSubmitForm();
         assertTrue(warehousesPage.warehouseExists(name, location, capacity));
 
         warehouseId = warehousesPage.findWarehouseId(name,location, capacity);
         assertEquals(warehousesPage.findWarehouseName(warehouseId), name);
         assertEquals(warehousesPage.findWarehouseLocation(warehouseId), location);
-        assertEquals(warehousesPage.findWarehouseCapacityByWarehouseId(warehouseId), capacity);
+        assertEquals(warehousesPage.findWarehouseCapacity(warehouseId), capacity);
     }
 
     @When("I click the edit warehouse button for that warehouse")
@@ -75,9 +75,9 @@ public class EditWarehouseSteps {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        editWarehousePage.updateNameField(updatedName);
-        editWarehousePage.updateLocationField(updatedLocation);
-        editWarehousePage.updateCapacityField(updatedCapacity);
+        editWarehousePage.setNameField(updatedName);
+        editWarehousePage.setLocationField(updatedLocation);
+        editWarehousePage.setCapacityField(updatedCapacity);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -103,7 +103,7 @@ public class EditWarehouseSteps {
 
         assertEquals(warehousesPage.findWarehouseName(warehouseId), updatedName);
         assertEquals(warehousesPage.findWarehouseLocation(warehouseId), updatedLocation);
-        assertEquals(warehousesPage.findWarehouseCapacityByWarehouseId(warehouseId), updatedCapacity);
+        assertEquals(warehousesPage.findWarehouseCapacity(warehouseId), updatedCapacity);
 
         teardown();
     }

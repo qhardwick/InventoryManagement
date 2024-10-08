@@ -69,7 +69,7 @@ public class WarehouseItemsPage {
     }
 
     // Check to see if the table is empty:
-    public boolean isWarehouseEmpty() {
+    public boolean warehouseIsEmpty() {
         // There should always be at least one empty row plus the row displaying capacity:
         return getNumberOfEntries() < 3;
     }
@@ -128,7 +128,7 @@ public class WarehouseItemsPage {
     }
 
     // Select the row for the given item. Input the number of items to add:
-    public void fillOutAddItemsFormForAnItem(int itemId, int quantity) {
+    public void setAddItemsForm(int itemId, int quantity) {
 
         // xpath to select the row in the 'Items' table with the specified itemId in the first column:
         String rowXpath = getXpathForItemTableRow(itemId);
@@ -148,7 +148,7 @@ public class WarehouseItemsPage {
     }
 
     // Check to see if the warehouse has enough capacity to store the items:
-    public boolean hasEnoughCapacityForItems(int itemId, int quantity) {
+    public boolean hasCapacityForItems(int itemId, int quantity) {
         // xpath to select the row in the 'Items' table with the specified itemId in the first column:
         String rowXpath = getXpathForItemTableRow(itemId);
 
@@ -171,7 +171,7 @@ public class WarehouseItemsPage {
     }
 
     // Click on the add button to add the items to the warehouse:
-    public void clickButtonToSubmitAddItemsForm(int itemId) {
+    public void clickSubmitAddItemsForm(int itemId) {
         // xpath to select the row in the 'Items' table with the specified itemId in the first column:
         String rowXpath = getXpathForItemTableRow(itemId);
 
@@ -192,7 +192,7 @@ public class WarehouseItemsPage {
     }
 
     // Select the row for the given part number. Input the number of items to remove:
-    public void fillOutRemoveItemsFormForAGivenItem(int itemId, int quantity) {
+    public void setRemoveItemsForm(int itemId, int quantity) {
 
         // xpath to select the row in the 'Items' table with the specified itemId in the first column:
         String rowXpath = getXpathForItemTableRow(itemId);
@@ -212,7 +212,7 @@ public class WarehouseItemsPage {
     }
 
     // Click on the remove button to remove the items to the warehouse:
-    public void clickButtonToSubmitRemoveItemsForm(int itemId) {
+    public void clickSubmitRemoveItemsForm(int itemId) {
         // xpath to select the row in the 'Items' table with the specified itemId in the first column:
         String rowXpath = getXpathForItemTableRow(itemId);
 
@@ -237,6 +237,7 @@ public class WarehouseItemsPage {
     }
 
     // Empty all contents from the Warehouse:
+    // Note: Does not represent a single button on page, but rather a convenience function for testing:
     public void emptyTheWarehouse() {
         wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(warehouseItemsTable));
         List<WebElement> itemRows = warehouseItemsTable.findElements(By.xpath(".//tbody/tr[td[1][normalize-space()]]"));
@@ -246,8 +247,8 @@ public class WarehouseItemsPage {
             int quantity = Integer.parseInt(row.findElement(By.xpath(".//td[3]")).getText());
 
             removeItemsButton.click();
-            fillOutRemoveItemsFormForAGivenItem(itemId, quantity);
-            clickButtonToSubmitRemoveItemsForm(itemId);
+            setRemoveItemsForm(itemId, quantity);
+            clickSubmitRemoveItemsForm(itemId);
         }
     }
 

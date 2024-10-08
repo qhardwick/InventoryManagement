@@ -51,21 +51,21 @@ public class EditWarehousePage {
     }
 
     // Update name field:
-    public void updateNameField(String name) {
+    public void setNameField(String name) {
         wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(nameField));
         nameField.clear();
         nameField.sendKeys(name);
     }
 
     // Update location field:
-    public void updateLocationField(String location) {
+    public void setLocationField(String location) {
         wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(locationField));
         locationField.clear();
         locationField.sendKeys(location);
     }
 
     // Update capacity field:
-    public void updateCapacityField(int capacity) {
+    public void setCapacityField(int capacity) {
         wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.elementToBeClickable(capacityField));
         capacityField.clear();
         capacityField.sendKeys(String.valueOf(capacity));

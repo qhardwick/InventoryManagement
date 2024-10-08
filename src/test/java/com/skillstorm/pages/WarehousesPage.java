@@ -61,7 +61,7 @@ public class WarehousesPage {
     }
 
     // Fill in the details of the new warehouse form:
-    public void fillOutNewWarehouseForm(String name, String location, int capacity) {
+    public void setNewWarehouseForm(String name, String location, int capacity) {
 
         wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(nameField));
 
@@ -167,7 +167,7 @@ public class WarehousesPage {
     }
 
     // Find Warehouse capacity by its id:
-    public int findWarehouseCapacityByWarehouseId(int id) {
+    public int findWarehouseCapacity(int id) {
         WebElement row = wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(getWarehouseRow(id).get()));
         String capacityString = row.findElement(By.xpath(".//td[4]"))
                 .getText();
