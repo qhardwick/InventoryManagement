@@ -1,5 +1,6 @@
 package com.skillstorm.pages;
 
+import com.skillstorm.utils.PropertiesLoader;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -14,7 +15,7 @@ public class ItemsPage {
     private final WebDriver driver;
     private final WebDriverWait wait;
     private final Navbar navbar;
-    private static final String url = "http://52.90.145.230/items";
+    private static String url;
 
     // Button to open add new item form:
     @FindBy(className = "btn-add")
@@ -35,6 +36,8 @@ public class ItemsPage {
     // Constructor to initialize driver and page elements:
     public ItemsPage(WebDriver driver) {
         this.driver = driver;
+        String domain = PropertiesLoader.getProperty("domain");
+        url = domain + "/items";
         navbar = new Navbar(driver);
         wait = new WebDriverWait(driver, Duration.ofMillis(5000));
         PageFactory.initElements(driver, this);

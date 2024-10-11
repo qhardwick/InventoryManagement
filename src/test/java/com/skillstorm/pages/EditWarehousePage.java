@@ -1,5 +1,6 @@
 package com.skillstorm.pages;
 
+import com.skillstorm.utils.PropertiesLoader;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -41,7 +42,8 @@ public class EditWarehousePage {
 
     // Navigate directly to Edit Warehouse page:
     public void get(int warehouseId) {
-        url = "http://52.90.145.230/warehouses/" + warehouseId;
+        String domain = PropertiesLoader.getProperty("domain");
+        url = domain + "/warehouses/" + warehouseId;
         driver.navigate().to(url);
     }
 

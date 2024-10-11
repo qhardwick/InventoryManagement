@@ -1,5 +1,6 @@
 package com.skillstorm.pages;
 
+import com.skillstorm.utils.PropertiesLoader;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -38,7 +39,8 @@ public class EditItemPage {
 
     // Navigate directly to the Edit Items page:
     public void get(int itemId) {
-        url = "http://localhost:5173/items/" + itemId;
+        String domain = PropertiesLoader.getProperty("domain");
+        url = domain + "/items/" + itemId;
         driver.navigate().to(url);
     }
 
