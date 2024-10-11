@@ -1,5 +1,6 @@
 package com.skillstorm.pages;
 
+import com.skillstorm.utils.PropertiesLoader;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -43,7 +44,8 @@ public class WarehouseItemsPage {
 
     // Use a given warehouse id to set our url:
     public void get(int warehouseId) {
-        url = "http://52.90.145.230/warehouses/" + warehouseId + "/items";
+        String domain = PropertiesLoader.getProperty("domain");
+        url = domain + "/warehouses/" + warehouseId + "/items";
         driver.navigate().to(url);
     }
 

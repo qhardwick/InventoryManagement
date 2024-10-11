@@ -1,5 +1,7 @@
 package com.skillstorm.pages;
 
+import com.skillstorm.utils.PropertiesLoader;
+import lombok.Getter;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,12 +12,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+@Getter
 public class HomePage {
 
     private final WebDriver driver;
     private final WebDriverWait wait;
     private final Navbar navbar;
-    private final String url = "http://52.90.145.230/";
+    private final String url;
 
     @FindBy(css = "a.landing-link[href='/warehouses']")
     private WebElement warehousesButton;
@@ -25,7 +28,8 @@ public class HomePage {
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
-        this.navbar = new Navbar(driver);
+        url = PropertiesLoader.getProperty("domain") + "/";
+        navbar = new Navbar(driver);
         wait = new WebDriverWait(driver, Duration.ofMillis(5000));
         PageFactory.initElements(driver, this);
     }

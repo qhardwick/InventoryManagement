@@ -31,7 +31,7 @@ public class HomeNavigationSteps {
     @Given("We are on the Home page")
     public void weAreOnTheHomePage() {
         homePage.get();
-        assertTrue(homePage.onPage());
+        assertTrue(homePage.onPage(), "Supposed to be on " + homePage.getUrl() + " but are on " + driver.getCurrentUrl());
     }
 
     @When("we click the Warehouse Manager link")

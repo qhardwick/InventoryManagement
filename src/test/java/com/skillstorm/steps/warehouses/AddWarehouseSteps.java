@@ -1,5 +1,6 @@
 package com.skillstorm.steps.warehouses;
 
+import com.skillstorm.pages.Navbar;
 import com.skillstorm.pages.WarehousesPage;
 import com.skillstorm.utils.SingletonDriver;
 import io.cucumber.java.After;
@@ -20,14 +21,14 @@ public class AddWarehouseSteps {
 
     private WebDriver driver;
     private WarehousesPage warehousesPage;
+    private Navbar navbar;
     private int currentWarehouseId;
-    private List<Integer> createdWarehouses;
 
     @Before("@createWarehouse")
     public void before() {
         driver = SingletonDriver.getChromeDriver();
         warehousesPage = new WarehousesPage(driver);
-        createdWarehouses = new ArrayList<>();
+        navbar = new Navbar(driver);
     }
 
     @Given("I am on the WarehouseManager page")
